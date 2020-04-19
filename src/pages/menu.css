@@ -1,0 +1,12 @@
+body {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.main-menu .search {
+    border: 2px solid rgb(0, 177, 221);
+    display: flex;
+    padding: 20px;
+    justify-content: space-between;
+    margin: 2%;
+}
