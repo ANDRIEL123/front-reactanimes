@@ -45,9 +45,8 @@ export default class Menu extends Component {
         const { animes, animesAux, search } = this.state
         return (
             <div className="main-menu">
-                < Header /><br></br>
                 <div>
-                    <Button variant="contained" type="submit" color="primary" onClick={""} >Incluir um novo anime</Button>
+                    <Button variant="contained" type="submit" color="primary" onClick={() => window.location.href = 'http://localhost:3001/incluir-anime'} >Incluir um novo anime</Button>
                 </div>
                 <div className="search">
                     <TextField label="Pesquise um anime" onKeyDown={(event) => { if (event.keyCode === 13) { this.filterAnimes(animes, search) } }} type="text" onChange={this.handleChangeSearch.bind(this)} />
@@ -84,7 +83,7 @@ export default class Menu extends Component {
 
 
 
-            </div>
+            </div >
 
 
         )

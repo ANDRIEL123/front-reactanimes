@@ -17,6 +17,7 @@ body {
 
 .main-menu .search input{
     margin-right: 5vmin;
+    width: 80vmin;
 }
 
 .main-menu .animes h2 {
