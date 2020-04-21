@@ -6,7 +6,44 @@ body {
 .main-menu .search {
     border: 2px solid rgb(0, 177, 221);
     display: flex;
+    justify-content: center;
     padding: 20px;
-    justify-content: space-between;
     margin: 2%;
+}
+
+.main-menu .search button{
+    margin-left: 5vmin;
+}
+
+.main-menu .search input{
+    margin-right: 5vmin;
+}
+
+.main-menu .animes h2 {
+    color: rgb(0, 177, 221);
+}
+
+.main-menu .animes .list-animes {
+    border: 1px solid rgb(0, 177, 221);
+    margin-top: 2vmin;
+}
+
+.main-menu .animes .list-animes .buttons {
+    display: flex;
+    justify-content: center;
+    margin: 2vmin;
+    
+}
+
+.main-menu .animes .list-animes .buttons .btn-edit{
+    margin-right: 7vmin;
+}
+
+.main-menu .animes .list-animes .buttons .btn-rem{
+    margin-left: 7vmin;
+}
+
+.main-menu .pages-animes {
+    display: flex;
+    justify-content: space-between;
 }
