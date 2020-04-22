@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import api from '../services/api'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import Header from './header'
 import './menu.css'
+
+
 
 /*
 const viewLocalStorage = () => {
@@ -22,7 +23,6 @@ export default class Menu extends Component {
     loadAnimesApi = async () => {
         const response = await api('/animes')
         this.setState({ animes: response.data.response, animesAux: response.data.response })
-        console.log(response.data.response)
     }
 
     componentDidMount() {
@@ -39,7 +39,19 @@ export default class Menu extends Component {
         });
         this.setState({ animesAux: filteredArray })
     };
-
+    //AINDA NÃO 100%
+    removerAnime = (anime, index) => {
+        const { animesAux } = this.state
+        api.delete(`/animes/${anime.id_anime}`)
+            .then(response => {
+                this.setState({ animesAux: animesAux.splice(index, 1) })
+                console.log(animesAux.splice(index, 1))
+                console.log(response)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
 
     render() {
         const { animes, animesAux, search } = this.state
@@ -57,16 +69,14 @@ export default class Menu extends Component {
                 <div className="animes">
                     <h2>Listagem dos Animes</h2>
 
-                    {animesAux.map(anime => (
-                        <div className="list-animes" key={anime._key}>
+                    {animesAux.map((anime, index) => (
+                        <div className="list-animes" key={anime}>
                             <h3>{anime.title}</h3>
                             <p>{anime.description}</p>
                             <div className="buttons">
                                 <Button variant="contained" className="btn-edit" type="submit" color="primary" onClick={"#"} >Editar</Button>
-                                <Button variant="contained" className="btn-rem" type="submit" color="primary" onClick={"#"} >Remover</Button>
+                                <Button variant="contained" className="btn-rem" color="primary" onClick={() => this.removerAnime(anime, index)} >Remover</Button>
                             </div>
-
-
                         </div>
 
                     ))}
@@ -79,10 +89,6 @@ export default class Menu extends Component {
                     </div>
 
                 </div>
-
-
-
-
             </div >
 
 
