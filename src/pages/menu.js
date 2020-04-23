@@ -44,8 +44,9 @@ export default class Menu extends Component {
         const { animesAux } = this.state
         api.delete(`/animes/${anime.id_anime}`)
             .then(response => {
-                this.setState({ animesAux: animesAux.splice(index, 1) })
-                console.log(animesAux.splice(index, 1))
+                animesAux.splice(index, 1)
+                this.setState({ animesAux: animesAux })
+
                 console.log(response)
             })
             .catch(error => {
@@ -75,7 +76,12 @@ export default class Menu extends Component {
                             <p>{anime.description}</p>
                             <div className="buttons">
                                 <Button variant="contained" className="btn-edit" type="submit" color="primary" onClick={"#"} >Editar</Button>
-                                <Button variant="contained" className="btn-rem" color="primary" onClick={() => this.removerAnime(anime, index)} >Remover</Button>
+                                <Button variant="contained" className="btn-rem" color="primary" onClick={() => {
+                                    let confirma = window.confirm("Você deseja realmente remover esse anime e todos os seus episódios?")
+                                    if (confirma) {
+                                        this.removerAnime(anime, index)
+                                    }
+                                }} >Remover</Button>
                             </div>
                         </div>
 
