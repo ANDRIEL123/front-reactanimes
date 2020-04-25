@@ -42,18 +42,43 @@ export default class Incluir extends Component {
                     <div className="inclui-anime">
 
                         <h2>Inclusão de Anime</h2>
-                        <TextField label="Título do Anime" type="text" name="title" value={title} onChange={this.changeHandler} required /><br></br>
-                        <TextField label="Descrição do Anime" type="text" name="description" value={description} onChange={this.changeHandler} required /><br></br><br></br>
-                        <Button variant="contained" type="submit" color="primary" onClick={() => {
-                            if (title !== '' && description !== '') {
-                                this.addAnime(title, description)
-                                alert('Anime adicionado!')
-                                this.setState({ title: '', description: '' })
-                            } else {
-                                console.log('Preencha todos os campos')
-                            }
+                        <TextField
+                            label="Título do Anime"
+                            type="text"
+                            name="title"
+                            value={title}
+                            onChange={this.changeHandler}
+                            required />
+                        <br></br><br></br>
 
-                        }}>Incluir anime</Button>
+                        <TextField
+                            label="Descrição do Anime"
+                            type="text"
+                            name="description"
+                            multiline
+                            rows="4"
+                            className="description"
+                            variant="outlined"
+                            value={description}
+                            onChange={this.changeHandler}
+                            required />
+                        <br></br><br></br>
+
+                        <Button
+                            variant="contained"
+                            type="submit"
+                            color="primary"
+                            onClick={() => {
+                                if (title !== '' && description !== '') {
+                                    this.addAnime(title, description)
+                                    alert('Anime adicionado!')
+                                    this.setState({ title: '', description: '' })
+                                } else {
+                                    console.log('Preencha todos os campos')
+                                }
+
+                            }}>Incluir anime</Button>
+
                     </div>
                     <div>
                         <h3> by Andriel Friedrich © </h3>

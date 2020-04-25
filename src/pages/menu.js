@@ -9,8 +9,8 @@ import './menu.css'
 const customStyleModal = {
     content: {
         "display": "block",
-        "background": "rgba(38, 154, 184, 0.842)",
-        "border": "solid black 5px",
+        "background": "rgb(77, 76, 76)",
+        "border": "solid rgb(35, 97, 155) 5px",
     }
 }
 
@@ -51,6 +51,10 @@ export default class Menu extends Component {
         console.log(e.target.value)
     }
 
+    handleSubmit = e => {
+        e.preventDefault();
+    }
+
     filterAnimes = (animes, query) => {
         var filteredArray = animes.filter(anime => {
             return anime.title.toLowerCase().indexOf(query.toLowerCase()) >= 0;
@@ -85,8 +89,6 @@ export default class Menu extends Component {
             alert('Anime atualizado!')
             this.setState({ modalIsOpen: false })
 
-        } else {
-            alert('Preenche todos os campos!')
         }
     }
 
@@ -123,21 +125,23 @@ export default class Menu extends Component {
                                     contentLabel={"Atualiza anime"}
                                 >
                                     <center>
-                                        <h2>Atualizar dados de uma anime</h2><br></br>
+                                        <form onSubmit={this.handleSubmit}>
+                                            <h2 style={{ color: "rgb(0, 155, 194)" }}>Atualizar dados de uma anime</h2><br></br>
 
-                                        <TextField style={{ width: "80vmin" }} label="Título do Anime" type="text" name="title"
-                                            value={title} onChange={this.changeHandler} required />
-                                        <br></br>
-                                        <TextField style={{ width: "80vmin" }} label="Descrição do Anime" type="text" name="description"
-                                            value={description} onChange={this.changeHandler} required />
-                                        <br></br><br></br><br></br>
+                                            <TextField style={{ width: "80vmin" }} label="Título do Anime" type="text" name="title"
+                                                value={title} onChange={this.changeHandler} required />
+                                            <br></br>
+                                            <TextField style={{ width: "80vmin" }} label="Descrição do Anime" type="text" name="description"
+                                                value={description} onChange={this.changeHandler} required />
+                                            <br></br><br></br><br></br>
 
-                                        <Button style={{ marginRight: "5vmin" }} type="submit" variant="contained" className="btn-atualiza" color="primary"
-                                            onClick={() => this.updateAnime(anime, index)}
-                                        >Atualizar</Button>
-                                        <Button style={{ marginLeft: "5vmin" }} variant="contained" className="btn-cancel" color="primary"
-                                            onClick={() => this.setState({ modalIsOpen: false })}
-                                        >Cancelar</Button>
+                                            <Button style={{ marginRight: "5vmin" }} type="submit" variant="contained" className="btn-atualiza" color="primary"
+                                                onClick={() => this.updateAnime(anime, index)}
+                                            >Atualizar</Button>
+                                            <Button style={{ marginLeft: "5vmin" }} variant="contained" className="btn-cancel" color="primary"
+                                                onClick={() => this.setState({ modalIsOpen: false })}
+                                            >Cancelar</Button>
+                                        </form>
                                     </center>
                                 </Modal>
 

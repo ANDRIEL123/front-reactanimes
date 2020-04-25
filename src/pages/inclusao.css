@@ -1,8 +1,12 @@
 .inclui-anime {
-    padding: 10vmin;
+    padding: 5vmin;
     border: solid rgb(0, 177, 221) 2px;
 }
 
 .inclui-anime input {
-    width: 80vmin;
+    width: 70vmin;
+}
+
+.inclui-anime .description {
+    width: 70vmin;
 }
