@@ -20,7 +20,7 @@ const autentificaRota = () => {
 export default function mainRoutes() {
     return (
         <div>
-            <Header />
+
             <Routes>
                 <Route path="/" element={< Login />} />
                 <Route path="/dashboard" element={autentificaRota()} />

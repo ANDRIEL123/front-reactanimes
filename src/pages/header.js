@@ -9,7 +9,7 @@ const Header = () => {
     let navigate = useNavigate()
     return (
         <div>
-            <a href="" style={{ textDecoration: "none" }} onClick={() => navigate('/dashboard')}>
+            <a href="/dashboard" style={{ textDecoration: "none" }} onClick={() => navigate('/dashboard')}>
                 <header id="main-header">Gestão React Animes</header>
             </a>
             <br></br>
