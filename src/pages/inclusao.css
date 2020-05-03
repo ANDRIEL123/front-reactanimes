@@ -10,3 +10,13 @@
 .inclui-anime .description {
     width: 70vmin;
 }
+
+.inclui-anime .input-file {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.inclui-anime .input-file input{
+    width: 55vmin;
+}

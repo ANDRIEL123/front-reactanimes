@@ -99,10 +99,17 @@ export default class Menu extends Component {
             <div className="main-menu">
                 <Header />
                 <div>
-                    <Button variant="contained" type="submit" color="primary" onClick={() => window.location.href = 'http://localhost:3001/incluir-anime'} >Incluir um novo anime</Button>
+                    <Button variant="contained"
+                        type="submit"
+                        color="primary"
+                        onClick={() => window.location.href = 'http://localhost:3001/incluir-anime'}
+                    >Incluir um novo anime</Button>
                 </div>
                 <div className="search">
-                    <TextField label="Pesquise um anime" onKeyDown={(event) => { if (event.keyCode === 13) { this.filterAnimes(animes, search) } }} type="text" onChange={this.handleChangeSearch.bind(this)} />
+                    <TextField label="Pesquise um anime"
+                        onKeyDown={(event) => { if (event.keyCode === 13) { this.filterAnimes(animes, search) } }}
+                        type="text"
+                        onChange={this.handleChangeSearch.bind(this)} />
                     <Button variant="contained" type="submit" color="primary" onClick={() => this.filterAnimes(animes, search)} >Pesquisar anime</Button>
                 </div>
 
@@ -118,7 +125,7 @@ export default class Menu extends Component {
                                 <Button variant="contained" className="btn-edit" type="submit" color="primary"
                                     onClick={() => this.setState({ modalIsOpen: true, title: anime.title, description: anime.description })}
                                 >Editar</Button>
-
+                                {/*  Modal de atualização de animes usando react-modal */}
                                 <Modal
                                     isOpen={modalIsOpen}
                                     style={customStyleModal}
@@ -144,7 +151,13 @@ export default class Menu extends Component {
                                         </form>
                                     </center>
                                 </Modal>
-
+                                {/* Gestão dos episodios */}
+                                <Button
+                                    variant="contained"
+                                    className="btn-gerir"
+                                    color="primary"
+                                    onClick={() => console.log('Gerir episodios')} >Gerir Episodios
+                                </Button>
 
                                 <Button variant="contained" className="btn-rem" color="primary" onClick={() => {
                                     let confirma = window.confirm("Você deseja realmente remover esse anime e todos os seus episódios?")
@@ -152,6 +165,8 @@ export default class Menu extends Component {
                                         this.removerAnime(anime, index)
                                     }
                                 }} >Remover</Button>
+
+
                             </div>
                         </div>
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import Input from '@material-ui/core/Input';
 import api from '../services/api'
 import Header from './header'
 import './inclusao.css'
@@ -8,7 +9,8 @@ import './inclusao.css'
 export default class Incluir extends Component {
     state = {
         title: '',
-        description: ''
+        description: '',
+        selectedFile: null
     }
 
     changeHandler = e => {
@@ -19,19 +21,25 @@ export default class Incluir extends Component {
         e.preventDefault();
     }
 
-
     addAnime = (title, description) => {
-        api.post('/animes', {
-            title: title,
-            description: description
-        })
-            .then(response => {
-                console.log(response.config.data)
-            })
-            .catch(error => {
-                console.error(error)
-            })
+        const fd = new FormData();
+        fd.append("titleAnime", title);
+        fd.append("descriptionAnime", description);
+        fd.append("imgAnime", this.state.selectedFile, this.state.selectedFile.name)
+
+
+        api.post("/animes", fd)
+            .then(response => console.log(response))
+            .catch(error => console.log('error', error));
     }
+
+    fileSelectedHandler = e => {
+        this.setState({
+            selectedFile: e.target.files[0]
+        })
+        console.log(e.target.files[0])
+    }
+
 
     render() {
         const { title, description } = this.state
@@ -62,6 +70,20 @@ export default class Incluir extends Component {
                             value={description}
                             onChange={this.changeHandler}
                             required />
+
+                        <br></br><br></br>
+                        Selecione a imagem do Anime <br></br><br></br>
+                        <div className="input-file">
+                            <Button
+                                variant="contained"
+                                type="submit"
+                                color="primary"
+                            ><input
+                                    type="file"
+                                    onChange={this.fileSelectedHandler}
+                                /></Button>
+
+                        </div>
                         <br></br><br></br>
 
                         <Button
@@ -76,7 +98,6 @@ export default class Incluir extends Component {
                                 } else {
                                     console.log('Preencha todos os campos')
                                 }
-
                             }}>Incluir anime</Button>
 
                     </div>
