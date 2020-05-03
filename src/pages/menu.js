@@ -33,6 +33,11 @@ export default class Menu extends Component {
         modalIsOpen: false
     }
 
+    pegaUrlAtual = () => {
+        const url = window.location.href.split(window.location.pathname)
+        return url[0]
+    }
+
     loadAnimesApi = async () => {
         const response = await api('/animes')
         this.setState({ animes: response.data.response, animesAux: response.data.response })
@@ -92,6 +97,11 @@ export default class Menu extends Component {
         }
     }
 
+    gerirAnimes = () => {
+
+        window.location.href = this.pegaUrlAtual() + "/gerir-episodios"
+    }
+
     render() {
         const { animes, animesAux, search, title, description, modalIsOpen } = this.state
         return (
@@ -102,7 +112,7 @@ export default class Menu extends Component {
                     <Button variant="contained"
                         type="submit"
                         color="primary"
-                        onClick={() => window.location.href = 'http://localhost:3001/incluir-anime'}
+                        onClick={() => window.location.href = this.pegaUrlAtual() + "/incluir-anime"}
                     >Incluir um novo anime</Button>
                 </div>
                 <div className="search">
@@ -156,7 +166,7 @@ export default class Menu extends Component {
                                     variant="contained"
                                     className="btn-gerir"
                                     color="primary"
-                                    onClick={() => console.log('Gerir episodios')} >Gerir Episodios
+                                    onClick={() => this.gerirAnimes()} >Gerir Episodios
                                 </Button>
 
                                 <Button variant="contained" className="btn-rem" color="primary" onClick={() => {
