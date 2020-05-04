@@ -97,9 +97,8 @@ export default class Menu extends Component {
         }
     }
 
-    gerirAnimes = () => {
-
-        window.location.href = this.pegaUrlAtual() + "/gerir-episodios"
+    gerirRotas = (rota) => {
+        window.location.href = this.pegaUrlAtual() + rota
     }
 
     render() {
@@ -112,7 +111,7 @@ export default class Menu extends Component {
                     <Button variant="contained"
                         type="submit"
                         color="primary"
-                        onClick={() => window.location.href = this.pegaUrlAtual() + "/incluir-anime"}
+                        onClick={() => this.gerirRotas("/incluir-anime")}
                     >Incluir um novo anime</Button>
                 </div>
                 <div className="search">
@@ -166,7 +165,7 @@ export default class Menu extends Component {
                                     variant="contained"
                                     className="btn-gerir"
                                     color="primary"
-                                    onClick={() => this.gerirAnimes()} >Gerir Episodios
+                                    onClick={() => this.gerirRotas('/gerir-episodios')} >Gerir Episodios
                                 </Button>
 
                                 <Button variant="contained" className="btn-rem" color="primary" onClick={() => {
