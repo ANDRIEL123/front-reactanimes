@@ -4,6 +4,7 @@ import Menu from './pages/menu'
 import Autentifica from './erroAutentification'
 import Inclusao from './pages/inclusao'
 import Header from './pages/header'
+import Update from './pages/updateAnime'
 import GestaoEpisodios from './pages/gestaoEpisodios'
 
 import {
@@ -27,6 +28,7 @@ export default function mainRoutes() {
                 <Route path="/dashboard" element={autentificaRota()} />
                 <Route path="/incluir-anime" element={< Inclusao />} />
                 <Route path="/gerir-episodios" element={<GestaoEpisodios />} />
+                <Route path="/update-animes/:id_anime" element={<Update />} />
             </Routes>
         </div>
     )

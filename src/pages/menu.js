@@ -2,34 +2,20 @@ import React, { Component } from 'react'
 import api from '../services/api'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import Modal from 'react-modal'
+import Update from './updateAnime'
 import Header from './header'
 import './menu.css'
 
-const customStyleModal = {
-    content: {
-        "display": "block",
-        "background": "rgb(77, 76, 76)",
-        "border": "solid rgb(35, 97, 155) 5px",
-    }
-}
-
-Modal.setAppElement("#root")
-
-/*
-const viewLocalStorage = () => {
-    console.log(sessionStorage.getItem('user'))
-    console.log(sessionStorage.getItem('password'))
-}
-*/
 
 export default class Menu extends Component {
     state = {
         animes: [],
         animesAux: [],
+        idanime: null,
         search: '',
         title: '',
         description: '',
+        key: '',
         modalIsOpen: false
     }
 
@@ -53,7 +39,6 @@ export default class Menu extends Component {
 
     changeHandler = e => {
         this.setState({ [e.target.name]: e.target.value })
-        console.log(e.target.value)
     }
 
     handleSubmit = e => {
@@ -81,28 +66,12 @@ export default class Menu extends Component {
             })
     }
 
-    updateAnime = (anime, index) => {
-        const { title, description, animesAux } = this.state
-        if (title !== '' && description !== '') {
-            api.patch(`/animes/${anime.id_anime}`, {
-                title: title,
-                description: description
-            })
-            animesAux[index].title = title
-            animesAux[index].description = description
-            this.setState({ animesAux: animesAux })
-            alert('Anime atualizado!')
-            this.setState({ modalIsOpen: false })
-
-        }
-    }
-
     gerirRotas = (rota) => {
         window.location.href = this.pegaUrlAtual() + rota
     }
 
     render() {
-        const { animes, animesAux, search, title, description, modalIsOpen } = this.state
+        const { animes, animesAux, search, title, description, modalIsOpen, key } = this.state
         return (
 
             <div className="main-menu">
@@ -127,41 +96,20 @@ export default class Menu extends Component {
                     <h2>Listagem dos Animes</h2>
 
                     {animesAux.map((anime, index) => (
-                        <div className="list-animes" key={anime}>
+                        <div className="list-animes" key={anime._key}>
+
                             <h3>{anime.title}</h3>
                             <p>{anime.description}</p>
                             <div className="buttons">
-                                <Button variant="contained" className="btn-edit" type="submit" color="primary"
-                                    onClick={() => this.setState({ modalIsOpen: true, title: anime.title, description: anime.description })}
-                                >Editar</Button>
-                                {/*  Modal de atualização de animes usando react-modal */}
-                                <Modal
-                                    isOpen={modalIsOpen}
-                                    style={customStyleModal}
-                                    contentLabel={"Atualiza anime"}
-                                >
-                                    <center>
-                                        <form onSubmit={this.handleSubmit}>
-                                            <h2 style={{ color: "rgb(0, 155, 194)" }}>Atualizar dados de uma anime</h2><br></br>
-
-                                            <TextField style={{ width: "80vmin" }} label="Título do Anime" type="text" name="title"
-                                                value={title} onChange={this.changeHandler} required />
-                                            <br></br>
-                                            <TextField style={{ width: "80vmin" }} label="Descrição do Anime" type="text" name="description"
-                                                value={description} onChange={this.changeHandler} required />
-                                            <br></br><br></br><br></br>
-
-                                            <Button style={{ marginRight: "5vmin" }} type="submit" variant="contained" className="btn-atualiza" color="primary"
-                                                onClick={() => this.updateAnime(anime, index)}
-                                            >Atualizar</Button>
-                                            <Button style={{ marginLeft: "5vmin" }} variant="contained" className="btn-cancel" color="primary"
-                                                onClick={() => this.setState({ modalIsOpen: false })}
-                                            >Cancelar</Button>
-                                        </form>
-                                    </center>
-                                </Modal>
-                                {/* Gestão dos episodios */}
                                 <Button
+                                    variant="contained"
+                                    className="btn-edit"
+                                    type="submit"
+                                    color="primary"
+                                    onClick={() => this.gerirRotas(`/update-animes/${anime.id_anime}`)}> Editar</Button>
+
+                                {/* Gestão dos episodios */}
+                                < Button
                                     variant="contained"
                                     className="btn-gerir"
                                     color="primary"
