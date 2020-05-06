@@ -8,8 +8,6 @@ import Header from './header'
 import './inclusao.css'
 
 const updateAnime = async (id_anime, description, title, key) => {
-
-
     const response = await api.patch(
         `/animes/${id_anime}`,
         {
@@ -21,23 +19,25 @@ const updateAnime = async (id_anime, description, title, key) => {
     console.log(response)
 }
 
-const loadAnime = async (id_anime) => {
-    const response = await api.get(`/animes/${id_anime}`)
-    return response.data.response
-}
-
 function Update() {
     let { id_anime } = useParams()
     let [title, setTitle] = useState('')
     let [description, setDescription] = useState('')
     let [key, setKey] = useState('')
+    let [anime, setAnime] = useState([])
+
+    const loadAnime = async () => {
+        const response = await api.get(`/animes/${id_anime}`)
+        anime = response.data.response //Recebendo os dados do anime
+        console.log(anime)
+        setTitle(anime.titleAnime)
+        setDescription(anime.descriptionAnime)
+        setKey(anime.keyAnime)
+    }
 
     useEffect(() => {
-        const anime = loadAnime(id_anime)
-        console.log(anime)
-
+        loadAnime()
     }, [])
-
 
     return (
         <div>
