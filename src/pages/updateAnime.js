@@ -1,35 +1,43 @@
 import React, { useState, useEffect } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import Input from '@material-ui/core/Input';
 import api from '../services/api'
 import Header from './header'
 import './inclusao.css'
 
-const updateAnime = async (id_anime, description, title, key) => {
-    const response = await api.patch(
-        `/animes/${id_anime}`,
-        {
-            descriptionAnime: description,
-            titleAnime: title,
-            keyAnime: key
-        }
-    )
-    console.log(response)
-}
 
 function Update() {
+    const navigate = useNavigate()
     let { id_anime } = useParams()
+
     let [title, setTitle] = useState('')
     let [description, setDescription] = useState('')
     let [key, setKey] = useState('')
     let [anime, setAnime] = useState([])
 
+    const updateAnime = async (id_anime, description, title, key) => {
+        const response = await api.patch(
+            `/animes/${id_anime}`,
+            {
+                descriptionAnime: description,
+                titleAnime: title,
+                keyAnime: key
+            }
+        )
+        if (response.status === 200) {
+            alert('Anime atualizado com sucesso!')
+            navigate('/dashboard')
+
+        } else {
+            alert('Problema na atualização do anime.')
+        }
+    }
+
     const loadAnime = async () => {
         const response = await api.get(`/animes/${id_anime}`)
         anime = response.data.response //Recebendo os dados do anime
-        console.log(anime)
         setTitle(anime.titleAnime)
         setDescription(anime.descriptionAnime)
         setKey(anime.keyAnime)
