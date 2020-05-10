@@ -142,7 +142,7 @@ export default class Menu extends Component {
                                     > Editar</Button>
                                 </Link>
                                 {/* Gestão dos episodios */}
-                                <Link to="/gerir-episodios">
+                                <Link to={`/gerir-episodios/${anime.id_anime}`}>
                                     < Button
                                         variant="contained"
                                         className="btn-gerir"
