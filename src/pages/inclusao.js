@@ -10,6 +10,7 @@ export default class Incluir extends Component {
     state = {
         title: '',
         description: '',
+        key: '',
         selectedFile: null
     }
 
@@ -21,9 +22,10 @@ export default class Incluir extends Component {
         e.preventDefault();
     }
 
-    addAnime = (title, description) => {
+    addAnime = (title, description, key) => {
         const fd = new FormData();
         fd.append("titleAnime", title);
+        fd.append("keyAnime", key);
         fd.append("descriptionAnime", description);
         fd.append("imgAnime", this.state.selectedFile, this.state.selectedFile.name)
 
@@ -42,7 +44,7 @@ export default class Incluir extends Component {
 
 
     render() {
-        const { title, description } = this.state
+        const { title, description, key } = this.state
         return (
             <div>
                 <Header />
@@ -70,6 +72,15 @@ export default class Incluir extends Component {
                             value={description}
                             onChange={this.changeHandler}
                             required />
+                        <br></br><br></br>
+                        <TextField
+                            label="Key do Anime"
+                            type="text"
+                            name="key"
+                            className="key"
+                            value={key}
+                            onChange={this.changeHandler}
+                            required />
 
                         <br></br><br></br>
                         Selecione a imagem do Anime <br></br><br></br>
@@ -92,7 +103,7 @@ export default class Incluir extends Component {
                             color="primary"
                             onClick={() => {
                                 if (title !== '' && description !== '') {
-                                    this.addAnime(title, description)
+                                    this.addAnime(title, description, key)
                                     alert('Anime adicionado!')
                                     this.setState({ title: '', description: '' })
                                 } else {

@@ -71,10 +71,13 @@ function Update() {
                     value={key}
                     onChange={e => setKey(e.target.value)}
                     required />
-                <br></br>
+                <br></br><br></br>
                 <TextField
                     style={{ width: "80vmin" }}
                     label="Descrição do Anime"
+                    multiline
+                    rows="4"
+                    variant="outlined"
                     type="text"
                     name="description"
                     value={description}

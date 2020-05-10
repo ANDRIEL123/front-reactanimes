@@ -5,18 +5,18 @@ import Button from '@material-ui/core/Button'
 import Update from './updateAnime'
 import Header from './header'
 import './menu.css'
+import Img from './wallpaper_batman-JS.png'
 
 
 export default class Menu extends Component {
     state = {
         animes: [],
         animesAux: [],
-        idanime: null,
         search: '',
         title: '',
         description: '',
         key: '',
-        modalIsOpen: false
+        loadImg: null
     }
 
     pegaUrlAtual = () => {
@@ -26,7 +26,32 @@ export default class Menu extends Component {
 
     loadAnimesApi = async () => {
         const response = await api('/animes')
-        this.setState({ animes: response.data.response, animesAux: response.data.response })
+
+        this.setState({
+            animes: response.data.response,
+            animesAux: response.data.response
+        })
+
+    }
+
+    loadImgAnime = async (nomeImg) => {
+
+        var myHeaders = new Headers();
+        myHeaders.append('Content-Type', 'image/png');
+
+        await api(`/uploads/${nomeImg}`,
+            {
+                headers: myHeaders
+            }
+
+        )
+            .then(resolve => {
+                console.log(resolve)
+                this.setState({ imgAnime: resolve })
+            })
+            .catch(error => {
+                console.error(error)
+            })
     }
 
     componentDidMount() {
@@ -70,8 +95,12 @@ export default class Menu extends Component {
         window.location.href = this.pegaUrlAtual() + rota
     }
 
+    baseUrlUploads = (imagem) => {
+        return `http://localhost:3000/uploads/${imagem}`
+    }
+
     render() {
-        const { animes, animesAux, search, title, description, modalIsOpen, key } = this.state
+        const { animes, animesAux, search } = this.state
         return (
 
             <div className="main-menu">
@@ -97,7 +126,9 @@ export default class Menu extends Component {
 
                     {animesAux.map((anime, index) => (
                         <div className="list-animes" key={anime._key}>
+                            <br></br>
 
+                            <img src={this.baseUrlUploads(anime.imgAnime)} type="" width="125px" height="100px" />
                             <h3>{anime.title}</h3>
                             <p>{anime.description}</p>
                             <div className="buttons">
