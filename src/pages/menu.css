@@ -3,6 +3,10 @@ body {
     margin-right: 10%;
 }
 
+a {
+    text-decoration: none;
+}
+
 .main-menu .search {
     border: 2px solid rgb(0, 177, 221);
     display: flex;

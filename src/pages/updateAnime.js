@@ -11,29 +11,24 @@ import './inclusao.css'
 function Update() {
     const navigate = useNavigate()
     let { id_anime } = useParams()
-
+    let [selectedFile, setFile] = useState('')
     let [title, setTitle] = useState('')
     let [description, setDescription] = useState('')
     let [key, setKey] = useState('')
     let [anime, setAnime] = useState([])
 
     const updateAnime = async (id_anime, description, title, key) => {
-        const response = await api.patch(
-            `/animes/${id_anime}`,
-            {
-                descriptionAnime: description,
-                titleAnime: title,
-                keyAnime: key
-            }
-        )
-        if (response.status === 200) {
-            alert('Anime atualizado com sucesso!')
-            navigate('/dashboard')
+        const fd = new FormData();
+        fd.append("titleAnime", title);
+        fd.append("keyAnime", key);
+        fd.append("descriptionAnime", description);
+        fd.append("imgAnime", selectedFile, selectedFile.name)
 
-        } else {
-            alert('Problema na atualização do anime.')
-        }
+        api.patch(`/animes/${id_anime}`, fd)
+            .then(response => console.log(response))
+            .catch(error => console.error(error))
     }
+
 
     const loadAnime = async () => {
         const response = await api.get(`/animes/${id_anime}`)
@@ -41,6 +36,11 @@ function Update() {
         setTitle(anime.titleAnime)
         setDescription(anime.descriptionAnime)
         setKey(anime.keyAnime)
+    }
+
+    const fileSelectedHandler = e => {
+        selectedFile = e.target.files[0]
+        console.log(selectedFile)
     }
 
     useEffect(() => {
@@ -84,6 +84,20 @@ function Update() {
                     onChange={e => setDescription(e.target.value)}
                     required />
                 <br></br><br></br><br></br>
+
+                Selecione a imagem do Anime <br></br><br></br>
+                <div className="input-file">
+                    <Button
+                        variant="contained"
+                        type="submit"
+                        color="primary"
+                    ><input
+                            type="file"
+                            onChange={fileSelectedHandler}
+                        /></Button>
+
+                </div>
+                <br></br><br></br>
 
                 <Button
                     style={{ marginRight: "5vmin" }}

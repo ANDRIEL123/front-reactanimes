@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import Update from './updateAnime'
 import Header from './header'
+import { Link } from 'react-router-dom'
 import './menu.css'
 import Img from './wallpaper_batman-JS.png'
 
@@ -132,20 +133,23 @@ export default class Menu extends Component {
                             <h3>{anime.title}</h3>
                             <p>{anime.description}</p>
                             <div className="buttons">
-                                <Button
-                                    variant="contained"
-                                    className="btn-edit"
-                                    type="submit"
-                                    color="primary"
-                                    onClick={() => this.gerirRotas(`/update-animes/${anime.id_anime}`)}> Editar</Button>
-
+                                <Link to={`/update-animes/${anime.id_anime}`}>
+                                    <Button
+                                        variant="contained"
+                                        className="btn-edit"
+                                        type="submit"
+                                        color="primary"
+                                    > Editar</Button>
+                                </Link>
                                 {/* Gestão dos episodios */}
-                                < Button
-                                    variant="contained"
-                                    className="btn-gerir"
-                                    color="primary"
-                                    onClick={() => this.gerirRotas('/gerir-episodios')} >Gerir Episodios
+                                <Link to="/gerir-episodios">
+                                    < Button
+                                        variant="contained"
+                                        className="btn-gerir"
+                                        color="primary"
+                                    >Gerir Episodios
                                 </Button>
+                                </Link>
 
                                 <Button variant="contained" className="btn-rem" color="primary" onClick={() => {
                                     let confirma = window.confirm("Você deseja realmente remover esse anime e todos os seus episódios?")
