@@ -32,21 +32,26 @@ export default class Login extends Component {
         this.validacaoUsuario()
     }
 
+    pegaUrlAtual = () => {
+        const url = window.location.href.split(window.location.pathname)
+        return url[0]
+    }
+
+    gerirRotas = (rota) => {
+        window.location.href = this.pegaUrlAtual() + rota
+    }
+
+
     validacaoUsuario = () => {
         const { user, password, users } = this.state;
         users.map(value => {
             if (user === value.user && password === value.password) {
-                console.log('DEU CARALHO')
                 sessionStorage.setItem('user', value.user)
                 sessionStorage.setItem('password', value.password)
-                window.location.href = 'http://localhost:3001/dashboard';
-                console.log(document.cookie)
-                return 0
-            } else {
-                console.log('NÃO DEU')
-                return 0
+                this.gerirRotas('/dashboard')
             }
         })
+        alert('Usuário não existente ou dados inválidos!')
     }
 
 

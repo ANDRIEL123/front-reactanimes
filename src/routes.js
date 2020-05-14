@@ -12,7 +12,7 @@ import {
 } from 'react-router-dom'
 
 const autentificaRota = () => {
-    if (sessionStorage.getItem('user') === 'admin' && sessionStorage.getItem('password') === 'root') {
+    if (sessionStorage.getItem('user') && sessionStorage.getItem('password')) {
         return < Menu />
     } else {
         return < Autentifica />
