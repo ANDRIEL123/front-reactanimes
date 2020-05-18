@@ -9,10 +9,11 @@ function GestaoEpisodios() {
     const navigate = useNavigate()
     let { id_anime } = useParams()
     let [episodios, setEpisodios] = useState([])
-
+    let [titleAnime, setTitleAnime] = useState('')
     const loadEpisodios = async () => {
         const response = await api.get(`/episodios/animes/${id_anime}`)
         setEpisodios(response.data.response)
+        setTitleAnime(response.data.response[0].titleAnime)
     }
 
     useEffect(() => {
@@ -36,7 +37,7 @@ function GestaoEpisodios() {
     return (
         <div className="main-gestaoEpisodios">
             <Header />
-            <h2>Gestão do Anime</h2>
+            <h2>{`Gestão do anime - ${titleAnime}`}</h2>
 
             <div>
                 <Button variant="contained"

@@ -2,49 +2,114 @@ import React, { useState } from 'react'
 import Header from '../header'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import api from '../../services/api'
+import { useParams, useNavigate } from 'react-router-dom'
 
 function IncluirEpisodio() {
+    const navigate = useNavigate()
+    let { id_anime } = useParams()
     let [title, setTitle] = useState('')
     let [description, setDescription] = useState('')
     let [key, setKey] = useState('')
+    let [selectedFile, setSelectedFile] = useState({})
 
-    const changeHandler = (e) => {
-        e.target.name(e.target.value)
-        console.log(e.target.value)
+    const fileSelectedHandler = e => {
+        selectedFile = e.target.files[0]
+        console.log(selectedFile)
+    }
+
+    const addEpisodio = () => {
+        const fd = new FormData();
+        fd.append("titleEpisodio", title);
+        fd.append("descriptionEpisodio", description);
+        fd.append("keyEpisodio", key);
+        fd.append("imgEpisodio", selectedFile, selectedFile.name);
+        fd.append("idanime", id_anime);
+
+        api.post(`/episodios`, fd)
+            .then(response => {
+                console.log(response)
+                let confirma = window.confirm('Episodio adicionado, deseja adicionar outro?')
+                if (confirma) {
+                    setTitle('')
+                    setDescription('')
+                    setKey('')
+                } else {
+                    navigate(`/gerir-episodios/${id_anime}`)
+                }
+
+            })
+
+            .catch(error => {
+                console.error(error)
+                alert('Problema na adição do episodio.')
+            })
     }
 
     return (
-        <div>
+        <div className="incluir-episodio">
             <Header />
             <h2>Inclusão de episódio</h2>
 
-            <form>
+            <form method="POST">
                 <TextField
+                    style={{ width: "80vmin" }}
                     label="Título do Anime"
                     type="text"
-                    name="setTitle"
+                    name="title"
                     value={title}
-                    onChange={changeHandler}
+                    onChange={e => setTitle(e.target.value)}
                     required />
                 <br></br><br></br>
                 <TextField
+                    style={{ width: "80vmin" }}
                     label="Description do Anime"
                     type="text"
                     multiline
                     rows="4"
                     variant="outlined"
-                    name="setDescription"
+                    name="description"
                     value={description}
-                    onChange={changeHandler}
+                    onChange={e => setDescription(e.target.value)}
                     required />
                 <br></br><br></br>
                 <TextField
+                    style={{ width: "80vmin" }}
                     label="Key do Anime"
                     type="text"
-                    name="setKey"
+                    name="key"
                     value={key}
-                    onChange={changeHandler}
+                    onChange={e => setKey(e.target.value)}
                     required />
+                <br></br><br></br>
+                <div className="input-file">
+                    <Button
+                        variant="contained"
+                        type="submit"
+                        color="primary"
+                    ><input
+                            type="file"
+                            onChange={fileSelectedHandler}
+                        /></Button>
+
+                </div>
+                <br></br><br></br>
+
+                <Button
+                    style={{ marginRight: "5vmin" }}
+                    variant="contained"
+                    className="btn-incluir"
+                    color="primary"
+                    onClick={() => addEpisodio()}
+                >Incluir</Button>
+
+                <Button
+                    style={{ marginLeft: "5vmin" }}
+                    variant="contained"
+                    className="btn-cancel"
+                    color="primary"
+                    onClick={() => navigate(`/gerir-episodios/${id_anime}`)}
+                >Cancelar</Button>
             </form>
         </div>
     )
