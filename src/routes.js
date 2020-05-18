@@ -6,6 +6,7 @@ import Inclusao from './pages/inclusao'
 import Header from './pages/header'
 import Update from './pages/updateAnime'
 import GestaoEpisodios from './pages/gestaoEpisodios/gestaoEpisodios'
+import IncluirEpisodio from './pages/gestaoEpisodios/incluirEpisodio'
 
 import {
     Routes, Route
@@ -22,13 +23,13 @@ const autentificaRota = () => {
 export default function mainRoutes() {
     return (
         <div>
-
             <Routes>
                 <Route path="/" element={< Login />} />
                 <Route path="/dashboard" element={autentificaRota()} />
                 <Route path="/incluir-anime" element={< Inclusao />} />
                 <Route path="/gerir-episodios/:id_anime" element={<GestaoEpisodios />} />
                 <Route path="/update-animes/:id_anime" element={<Update />} />
+                <Route path="/incluir-episodio/:id_anime" element={<IncluirEpisodio />} />
             </Routes>
         </div>
     )

@@ -43,15 +43,19 @@ export default class Login extends Component {
 
 
     validacaoUsuario = () => {
+        let valida = false
         const { user, password, users } = this.state;
         users.map(value => {
             if (user === value.user && password === value.password) {
                 sessionStorage.setItem('user', value.user)
                 sessionStorage.setItem('password', value.password)
                 this.gerirRotas('/dashboard')
+                valida = true
             }
         })
-        alert('Usuário não existente ou dados inválidos!')
+        if (valida === false) {
+            alert('Usuário não existente ou dados inválidos!')
+        }
     }
 
 

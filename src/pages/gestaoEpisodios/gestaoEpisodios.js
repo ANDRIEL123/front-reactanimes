@@ -37,11 +37,12 @@ function GestaoEpisodios() {
         <div className="main-gestaoEpisodios">
             <Header />
             <h2>Gestão do Anime</h2>
+
             <div>
                 <Button variant="contained"
                     type="submit"
                     color="primary"
-                    onClick={"x"}
+                    onClick={() => navigate(`/incluir-episodio/${id_anime}`)}
                 >Incluir um novo Episódio</Button>
             </div>
             <br></br>
