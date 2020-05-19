@@ -5,6 +5,15 @@ import Button from '@material-ui/core/Button'
 import api from '../../services/api'
 import { useParams, useNavigate } from 'react-router-dom'
 
+const pegaUrlAtual = () => {
+    const url = window.location.href.split(window.location.pathname)
+    return url[0]
+}
+
+const gerirRotas = (rota) => {
+    window.location.href = this.pegaUrlAtual() + rota
+}
+
 function IncluirEpisodio() {
     const navigate = useNavigate()
     let { id_anime } = useParams()
@@ -88,6 +97,7 @@ function IncluirEpisodio() {
                         type="submit"
                         color="primary"
                     ><input
+                            id="input-file"
                             type="file"
                             onChange={fileSelectedHandler}
                         /></Button>

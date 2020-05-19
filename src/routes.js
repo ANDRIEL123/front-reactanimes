@@ -7,6 +7,7 @@ import Header from './pages/header'
 import Update from './pages/updateAnime'
 import GestaoEpisodios from './pages/gestaoEpisodios/gestaoEpisodios'
 import IncluirEpisodio from './pages/gestaoEpisodios/incluirEpisodio'
+import UpdateEpisodio from './pages/gestaoEpisodios/updateEpisodio'
 
 import {
     Routes, Route
@@ -30,6 +31,7 @@ export default function mainRoutes() {
                 <Route path="/gerir-episodios/:id_anime" element={<GestaoEpisodios />} />
                 <Route path="/update-animes/:id_anime" element={<Update />} />
                 <Route path="/incluir-episodio/:id_anime" element={<IncluirEpisodio />} />
+                <Route path="/update-episodio/:id_episodio" element={<UpdateEpisodio />} />
             </Routes>
         </div>
     )

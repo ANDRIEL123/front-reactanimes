@@ -3,39 +3,52 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import { useParams, useNavigate } from 'react-router-dom'
 import Input from '@material-ui/core/Input';
-import api from '../services/api'
-import Header from './header'
-import './inclusao.css'
+import api from '../../services/api'
+import Header from '../header'
 
 
-function Update() {
+function UpdateEpisodio() {
     const navigate = useNavigate()
-    let { id_anime } = useParams()
+    let { id_episodio } = useParams()
     let [selectedFile, setFile] = useState('')
     let [title, setTitle] = useState('')
     let [description, setDescription] = useState('')
     let [key, setKey] = useState('')
     let [anime, setAnime] = useState([])
+    let [idanime, setIdanime] = useState(0)
 
-    const updateAnime = async (id_anime, description, title, key) => {
+    const updateEpisodio = async () => {
         const fd = new FormData();
-        fd.append("titleAnime", title);
-        fd.append("keyAnime", key);
-        fd.append("descriptionAnime", description);
-        fd.append("imgAnime", selectedFile, selectedFile.name)
+        fd.append("titleEpisodio", title);
+        fd.append("descriptionEpisodio", description);
+        fd.append("keyEpisodio", key);
+        fd.append("imgEpisodio", selectedFile, selectedFile.name);
+        fd.append("idepisodio", id_episodio);
 
-        api.patch(`/animes/${id_anime}`, fd)
-            .then(response => console.log(response))
-            .catch(error => console.error(error))
+        api.patch(`/episodios/${id_episodio}`, fd)
+            .then(response => {
+                console.log(response)
+                alert('Episódio alterado com sucesso!')
+                navigate(`/gerir-episodios/${idanime}`)
+            })
+            .catch(error => {
+                console.error(error)
+                alert('Problema na atualização do episódio!')
+            })
     }
 
 
-    const loadAnime = async () => {
-        const response = await api.get(`/animes/${id_anime}`)
+    const loadEpisodio = async () => {
+        const response = await api.get(`/episodios/${id_episodio}`)
         anime = response.data.response //Recebendo os dados do anime
-        setTitle(anime.titleAnime)
-        setDescription(anime.descriptionAnime)
-        setKey(anime.keyAnime)
+        console.log(anime)
+
+        setTitle(anime.titleEpisodio)
+        setDescription(anime.titleEpisodio)
+        setKey(anime.keyEpisodio)
+        //Pega o id do anime
+        setIdanime(anime.idanimes)
+
     }
 
     const fileSelectedHandler = e => {
@@ -44,7 +57,7 @@ function Update() {
     }
 
     useEffect(() => {
-        loadAnime()
+        loadEpisodio()
     }, [])
 
     return (
@@ -52,11 +65,11 @@ function Update() {
             <Header />
             <div className="update-anime">
 
-                <h2 style={{ color: "rgb(0, 155, 194)" }}>Atualizar dados de uma anime</h2><br></br>
+                <h2 style={{ color: "rgb(0, 155, 194)" }}>Atualizar dados de um episodio</h2><br></br>
 
                 <TextField
                     style={{ width: "80vmin" }}
-                    label="Título do Anime"
+                    label="Título do episódio"
                     type="text"
                     name="title"
                     value={title}
@@ -65,7 +78,7 @@ function Update() {
                 <br></br>
                 <TextField
                     style={{ width: "80vmin" }}
-                    label="Key"
+                    label="Key do episódio"
                     type="text"
                     name="key"
                     value={key}
@@ -74,7 +87,7 @@ function Update() {
                 <br></br><br></br>
                 <TextField
                     style={{ width: "80vmin" }}
-                    label="Descrição do Anime"
+                    label="Descrição do episódio"
                     multiline
                     rows="4"
                     variant="outlined"
@@ -85,7 +98,7 @@ function Update() {
                     required />
                 <br></br><br></br><br></br>
 
-                Selecione a imagem do Anime <br></br><br></br>
+                Selecione a imagem do episodio <br></br><br></br>
                 <div className="input-file">
                     <Button
                         variant="contained"
@@ -105,7 +118,7 @@ function Update() {
                     variant="contained"
                     className="btn-atualiza"
                     color="primary"
-                    onClick={() => updateAnime(id_anime, description, title, key)}
+                    onClick={() => updateEpisodio()}
                 >Atualizar</Button>
 
                 <Button
@@ -113,7 +126,7 @@ function Update() {
                     variant="contained"
                     className="btn-cancel"
                     color="primary"
-                    onClick={() => navigate(`/dashboard`)}
+                    onClick={() => navigate(`/gerir-episodios/${idanime}`)}
                 >Cancelar</Button>
             </div>
             <div>
@@ -124,5 +137,4 @@ function Update() {
     )
 }
 
-
-export default Update
+export default UpdateEpisodio

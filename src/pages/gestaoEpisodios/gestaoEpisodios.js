@@ -13,7 +13,9 @@ function GestaoEpisodios() {
     const loadEpisodios = async () => {
         const response = await api.get(`/episodios/animes/${id_anime}`)
         setEpisodios(response.data.response)
-        setTitleAnime(response.data.response[0].titleAnime)
+        //setTitleAnime(response.data.response[0].titleAnime)
+        console.log(response.data.response)
+
     }
 
     useEffect(() => {
@@ -34,6 +36,10 @@ function GestaoEpisodios() {
             })
     }
 
+    const baseUrlUploads = (imagem) => {
+        return `http://localhost:3000/uploads/${imagem}`
+    }
+
     return (
         <div className="main-gestaoEpisodios">
             <Header />
@@ -49,7 +55,7 @@ function GestaoEpisodios() {
             <br></br>
             {episodios.map((ep, index) => (
                 <div className="separa-episodio" key={ep.key}>
-
+                    <img src={baseUrlUploads(ep.imgEpisodio)} type="" width="125px" height="100px" />
                     <p><b>{ep.titleEpisodio}</b></p>
                     <p>{ep.descriptionEpisodio}</p>
                     <br />
@@ -57,7 +63,7 @@ function GestaoEpisodios() {
                         style={{ marginRifgt: "15vmin" }}
                         type="submit"
                         color="primary"
-                        onClick={"x"}
+                        onClick={() => navigate(`/update-episodio/${ep.idepisodios}`)}
                     >Editar</Button>
                     <Button variant="contained"
                         style={{ marginLeft: "15vmin" }}

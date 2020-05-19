@@ -22,6 +22,15 @@ export default class Incluir extends Component {
         e.preventDefault();
     }
 
+    pegaUrlAtual = () => {
+        const url = window.location.href.split(window.location.pathname)
+        return url[0]
+    }
+
+    gerirRotas = (rota) => {
+        window.location.href = this.pegaUrlAtual() + rota
+    }
+
     addAnime = (title, description, key) => {
         const fd = new FormData();
         fd.append("titleAnime", title);
@@ -31,7 +40,15 @@ export default class Incluir extends Component {
 
 
         api.post("/animes", fd)
-            .then(response => console.log(response))
+            .then(response => {
+                console.log(response)
+                let confirma = window.confirm('Anime adicionado, deseja adicionar outro?')
+                if (confirma) {
+                    this.gerirRotas(`/incluir-anime`)
+                } else {
+                    this.gerirRotas(`/dashboard`)
+                }
+            })
             .catch(error => console.log('error', error));
     }
 
@@ -101,15 +118,8 @@ export default class Incluir extends Component {
                             variant="contained"
                             type="submit"
                             color="primary"
-                            onClick={() => {
-                                if (title !== '' && description !== '') {
-                                    this.addAnime(title, description, key)
-                                    alert('Anime adicionado!')
-                                    this.setState({ title: '', description: '' })
-                                } else {
-                                    console.log('Preencha todos os campos')
-                                }
-                            }}>Incluir anime</Button>
+                            onClick={() => this.addAnime(title, description, key)}
+                        >Incluir anime</Button>
 
                     </div>
                     <div>
