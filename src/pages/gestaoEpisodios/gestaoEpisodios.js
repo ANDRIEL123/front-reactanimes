@@ -12,10 +12,9 @@ function GestaoEpisodios() {
     let [titleAnime, setTitleAnime] = useState('')
     const loadEpisodios = async () => {
         const response = await api.get(`/episodios/animes/${id_anime}`)
+        const responseAnime = await api.get(`/animes/${id_anime}`)
         setEpisodios(response.data.response)
-        //setTitleAnime(response.data.response[0].titleAnime)
-        console.log(response.data.response)
-
+        setTitleAnime(responseAnime.data.response.titleAnime)
     }
 
     useEffect(() => {
