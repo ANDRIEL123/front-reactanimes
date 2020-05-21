@@ -17,24 +17,51 @@ function UpdateEpisodio() {
     let [anime, setAnime] = useState([])
     let [idanime, setIdanime] = useState(0)
 
-    const updateEpisodio = async () => {
-        const fd = new FormData();
-        fd.append("titleEpisodio", title);
-        fd.append("descriptionEpisodio", description);
-        fd.append("keyEpisodio", key);
-        fd.append("imgEpisodio", selectedFile, selectedFile.name);
-        fd.append("idepisodio", id_episodio);
+    const pegaUrlAtual = () => {
+        const url = window.location.href.split(window.location.pathname)
+        return url[0]
+    }
 
-        api.patch(`/episodios/${id_episodio}`, fd)
-            .then(response => {
-                console.log(response)
-                alert('Episódio alterado com sucesso!')
-                navigate(`/gerir-episodios/${idanime}`)
+    const gerirRotas = (rota) => {
+        window.location.href = pegaUrlAtual() + rota
+    }
+
+    const updateEpisodio = async () => {
+        if (selectedFile) {
+            const fd = new FormData();
+            fd.append("titleEpisodio", title);
+            fd.append("descriptionEpisodio", description);
+            fd.append("keyEpisodio", key);
+            fd.append("imgEpisodio", selectedFile, selectedFile.name);
+            fd.append("idepisodio", id_episodio);
+
+            api.patch(`/episodios/${id_episodio}`, fd)
+                .then(response => {
+                    console.log(response)
+                    alert('Episódio alterado com sucesso!')
+                    navigate(`/gerir-episodios/${idanime}`)
+                })
+                .catch(error => {
+                    console.error(error)
+                    alert('Problema na atualização do episódio!')
+                })
+        } else {
+            api.patch(`/episodios/${id_episodio}`, {
+                titleEpisodio: title,
+                descriptionEpisodio: description,
+                keyEpisodio: key,
+                idepisodio: id_episodio
             })
-            .catch(error => {
-                console.error(error)
-                alert('Problema na atualização do episódio!')
-            })
+                .then(function (response) {
+                    console.log(response);
+                    alert('Episódio alterado com sucesso!')
+                    navigate(`/gerir-episodios/${idanime}`)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
     }
 
 

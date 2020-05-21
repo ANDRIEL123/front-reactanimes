@@ -32,24 +32,48 @@ export default class Incluir extends Component {
     }
 
     addAnime = (title, description, key) => {
-        const fd = new FormData();
-        fd.append("titleAnime", title);
-        fd.append("keyAnime", key);
-        fd.append("descriptionAnime", description);
-        fd.append("imgAnime", this.state.selectedFile, this.state.selectedFile.name)
+        //FAZ ISSO SE TIVER UM ARQUIVO SELECIONADO
+        if (this.state.selectedFile) {
+            const fd = new FormData();
+            fd.append("titleAnime", title);
+            fd.append("keyAnime", key);
+            fd.append("descriptionAnime", description);
+            fd.append("imgAnime", this.state.selectedFile, this.state.selectedFile.name)
 
 
-        api.post("/animes", fd)
-            .then(response => {
-                console.log(response)
-                let confirma = window.confirm('Anime adicionado, deseja adicionar outro?')
-                if (confirma) {
-                    this.gerirRotas(`/incluir-anime`)
-                } else {
-                    this.gerirRotas(`/dashboard`)
-                }
+            api.post("/animes", fd)
+                .then(response => {
+                    console.log(response)
+                    let confirma = window.confirm('Anime adicionado, deseja adicionar outro?')
+                    if (confirma) {
+                        this.gerirRotas(`/incluir-anime`)
+
+                    } else {
+                        this.gerirRotas(`/dashboard`)
+
+                    }
+                })
+                .catch(error => console.log('error', error));
+        } else {
+            api.post('/animes', {
+                titleAnime: title,
+                descriptionAnime: description,
+                keyAnime: key
             })
-            .catch(error => console.log('error', error));
+                .then(response => {
+                    console.log(response);
+                    let confirma = window.confirm('Anime adicionado, deseja adicionar outro?')
+                    if (confirma) {
+                        this.gerirRotas(`/incluir-anime`)
+                    } else {
+                        this.gerirRotas(`/dashboard`)
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+
     }
 
     fileSelectedHandler = e => {

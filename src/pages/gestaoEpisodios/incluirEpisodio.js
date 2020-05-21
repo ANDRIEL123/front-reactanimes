@@ -20,7 +20,7 @@ function IncluirEpisodio() {
     let [title, setTitle] = useState('')
     let [description, setDescription] = useState('')
     let [key, setKey] = useState('')
-    let [selectedFile, setSelectedFile] = useState({})
+    let [selectedFile, setSelectedFile] = useState(null)
 
     const fileSelectedHandler = e => {
         selectedFile = e.target.files[0]
@@ -28,29 +28,52 @@ function IncluirEpisodio() {
     }
 
     const addEpisodio = () => {
-        const fd = new FormData();
-        fd.append("titleEpisodio", title);
-        fd.append("descriptionEpisodio", description);
-        fd.append("keyEpisodio", key);
-        fd.append("imgEpisodio", selectedFile, selectedFile.name);
-        fd.append("idanime", id_anime);
+        //FAZ ISSO SE TIVER UM ARQUIVO SELECIONADO
+        if (selectedFile) {
+            const fd = new FormData();
+            fd.append("titleEpisodio", title);
+            fd.append("descriptionEpisodio", description);
+            fd.append("keyEpisodio", key);
+            fd.append("imgEpisodio", selectedFile, selectedFile.name);
+            fd.append("idanime", id_anime);
 
-        api.post(`/episodios`, fd)
-            .then(response => {
-                console.log(response)
-                let confirma = window.confirm('Episodio adicionado, deseja adicionar outro?')
-                if (confirma) {
-                    gerirRotas(`/incluir-episodio/${id_anime}`)
-                } else {
-                    navigate(`/gerir-episodios/${id_anime}`)
-                }
+            api.post(`/episodios`, fd)
+                .then(response => {
+                    console.log(response)
+                    let confirma = window.confirm('Episodio adicionado, deseja adicionar outro?')
+                    if (confirma) {
+                        gerirRotas(`/incluir-episodio/${id_anime}`)
+                    } else {
+                        navigate(`/gerir-episodios/${id_anime}`)
+                    }
 
+                })
+
+                .catch(error => {
+                    console.error(error)
+
+                })
+        } else {
+            api.post('/episodios', {
+                titleEpisodio: title,
+                descriptionEpisodio: description,
+                keyEpisodio: key,
+                idanime: id_anime
             })
+                .then(function (response) {
+                    console.log(response);
+                    let confirma = window.confirm('Episodio adicionado, deseja adicionar outro?')
+                    if (confirma) {
+                        gerirRotas(`/incluir-episodio/${id_anime}`)
+                    } else {
+                        navigate(`/gerir-episodios/${id_anime}`)
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
 
-            .catch(error => {
-                console.error(error)
-
-            })
     }
 
     return (

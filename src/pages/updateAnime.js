@@ -17,16 +17,41 @@ function Update() {
     let [key, setKey] = useState('')
     let [anime, setAnime] = useState([])
 
-    const updateAnime = async (id_anime, description, title, key) => {
-        const fd = new FormData();
-        fd.append("titleAnime", title);
-        fd.append("keyAnime", key);
-        fd.append("descriptionAnime", description);
-        fd.append("imgAnime", selectedFile, selectedFile.name)
+    const pegaUrlAtual = () => {
+        const url = window.location.href.split(window.location.pathname)
+        return url[0]
+    }
 
-        api.patch(`/animes/${id_anime}`, fd)
-            .then(response => console.log(response))
-            .catch(error => console.error(error))
+    const gerirRotas = (rota) => {
+        window.location.href = this.pegaUrlAtual() + rota
+    }
+
+    const updateAnime = async (id_anime, description, title, key) => {
+        if (selectedFile) {
+            const fd = new FormData();
+            fd.append("titleAnime", title);
+            fd.append("keyAnime", key);
+            fd.append("descriptionAnime", description);
+            fd.append("imgAnime", selectedFile, selectedFile.name)
+
+            api.patch(`/animes/${id_anime}`, fd)
+                .then(response => console.log(response))
+                .catch(error => console.error(error))
+        }
+
+        api.patch(`/animes/${id_anime}`, {
+            titleAnime: title,
+            descriptionAnime: description,
+            keyAnime: key
+        })
+            .then(function (response) {
+                console.log(response);
+                alert('Episodio alterado com sucesso')
+                navigate(`/gerir-episodios/${id_anime}`)
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
 

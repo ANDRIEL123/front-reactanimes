@@ -29,8 +29,8 @@ function GestaoEpisodios() {
     const removerEpisodio = (idepisodio, index, idanime) => {
         api.delete(`/episodios/${idepisodio}`)
             .then(response => {
-                episodios.splice(index, 1)
-                setEpisodios(episodios)
+                episodiosAux.splice(index, 1)
+                setEpisodiosAux(episodiosAux)
                 navigate(`/gerir-episodios/${idanime}`)
 
                 console.log(response)
