@@ -17,7 +17,7 @@ export default class Menu extends Component {
         title: '',
         description: '',
         key: '',
-        loadImg: null
+        page: 1
     }
 
     pegaUrlAtual = () => {
@@ -25,34 +25,25 @@ export default class Menu extends Component {
         return url[0]
     }
 
-    loadAnimesApi = async () => {
+    loadAnimesApi = async (page = 1) => {
         const response = await api('/animes')
 
         this.setState({
             animes: response.data.response,
             animesAux: response.data.response
         })
-
     }
 
-    loadImgAnime = async (nomeImg) => {
+    previousPage = () => {
+        let { page } = this.state
+        if (this.state.page > 0) {
+            this.setState({ page: page - 1 })
+        }
+    }
 
-        var myHeaders = new Headers();
-        myHeaders.append('Content-Type', 'image/png');
-
-        await api(`/uploads/${nomeImg}`,
-            {
-                headers: myHeaders
-            }
-
-        )
-            .then(resolve => {
-                console.log(resolve)
-                this.setState({ imgAnime: resolve })
-            })
-            .catch(error => {
-                console.error(error)
-            })
+    nextPage = () => {
+        let { page } = this.state
+        this.setState({ page: page + 1 })
     }
 
     componentDidMount() {
@@ -101,9 +92,8 @@ export default class Menu extends Component {
     }
 
     render() {
-        const { animes, animesAux, search } = this.state
+        const { animes, animesAux, search, page } = this.state
         return (
-
             <div className="main-menu">
                 <Header />
                 <div>
@@ -126,10 +116,10 @@ export default class Menu extends Component {
                     <h2>Listagem dos Animes</h2>
 
                     {animesAux.map((anime, index) => (
-                        <div className="list-animes" key={anime._key}>
-                            <br></br>
 
-                            <img src={this.baseUrlUploads(anime.imgAnime)} type="" width="125px" height="100px" />
+                        < div className="list-animes" key={anime._key} >
+                            <br></br>
+                            <img src={this.baseUrlUploads(anime.imgAnime)} width="125px" height="100px" />
                             <h3>{anime.title}</h3>
                             <p>{anime.description}</p>
                             <div className="buttons">
@@ -163,10 +153,6 @@ export default class Menu extends Component {
                         </div>
 
                     ))}
-                    <div className="pages-animes">
-                        <Button variant="contained" className="btn-ant" type="submit" color="primary" onClick={"#"} >Página anterior</Button>
-                        <Button variant="contained" className="btn-prox" type="submit" color="primary" onClick={"#"} >Próxima Página</Button>
-                    </div>
                     <div>
                         <h3> by Andriel Friedrich © </h3>
                     </div>
