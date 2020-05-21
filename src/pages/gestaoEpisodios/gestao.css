@@ -5,3 +5,9 @@
 .main-gestaoEpisodios .separa-episodio img{
     margin-top: 2vmin
 }
+
+.main-gestaoEpisodios .search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

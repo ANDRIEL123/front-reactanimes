@@ -11,7 +11,7 @@ const pegaUrlAtual = () => {
 }
 
 const gerirRotas = (rota) => {
-    window.location.href = this.pegaUrlAtual() + rota
+    window.location.href = pegaUrlAtual() + rota
 }
 
 function IncluirEpisodio() {
@@ -40,9 +40,7 @@ function IncluirEpisodio() {
                 console.log(response)
                 let confirma = window.confirm('Episodio adicionado, deseja adicionar outro?')
                 if (confirma) {
-                    setTitle('')
-                    setDescription('')
-                    setKey('')
+                    gerirRotas(`/incluir-episodio/${id_anime}`)
                 } else {
                     navigate(`/gerir-episodios/${id_anime}`)
                 }
@@ -51,7 +49,7 @@ function IncluirEpisodio() {
 
             .catch(error => {
                 console.error(error)
-                alert('Problema na adição do episodio.')
+
             })
     }
 
