@@ -32,6 +32,7 @@ export default class Menu extends Component {
             animes: response.data.response,
             animesAux: response.data.response
         })
+        console.log(response.data.response)
     }
 
     previousPage = () => {
