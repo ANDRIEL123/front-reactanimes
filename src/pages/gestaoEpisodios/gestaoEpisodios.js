@@ -13,13 +13,14 @@ function GestaoEpisodios() {
     let [episodiosAux, setEpisodiosAux] = useState([])
     let [titleAnime, setTitleAnime] = useState('')
     let [query, setQuery] = useState('')
+    let [imgAnime, setImgAnime] = useState('')
     const loadEpisodios = async () => {
         const response = await api.get(`/episodios/animes/${id_anime}`)
         const responseAnime = await api.get(`/animes/${id_anime}`)
         setEpisodios(response.data.response)
         setEpisodiosAux(response.data.response)
         setTitleAnime(responseAnime.data.response.titleAnime)
-        console.log(response.data.response)
+        setImgAnime(responseAnime.data.response.imgAnime)
     }
 
     useEffect(() => {
@@ -48,7 +49,11 @@ function GestaoEpisodios() {
     };
 
     const baseUrlUploads = (imagem) => {
-        return `${process.env.REACT_APP_API_URL}/uploads/${imagem}`
+        if (imagem !== null) {
+            return `${process.env.REACT_APP_API_URL}/uploads/${imagem}`
+        } else {
+            return `${process.env.REACT_APP_API_URL}/uploads/${imgAnime}`
+        }
     }
 
     return (
@@ -79,6 +84,7 @@ function GestaoEpisodios() {
                     <div className="separa-episodio" key={ep.key}>
                         <img src={baseUrlUploads(ep.imgEpisodio)} type="" width="125px" height="100px" />
                         <p><b>{ep.titleEpisodio}</b></p>
+                        {console.log(ep.imgEpisodio)}
                         <p>{ep.descriptionEpisodio}</p>
                         <br />
                         <Button variant="contained"
