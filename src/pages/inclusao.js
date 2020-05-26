@@ -3,9 +3,10 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import Input from '@material-ui/core/Input';
 import api from '../services/api'
-import Select from '@material-ui/core/Select';
 import Header from './header'
 import './inclusao.css'
+import Select from '@material-ui/core/Select';
+
 
 export default class Incluir extends Component {
     state = {
@@ -18,6 +19,7 @@ export default class Incluir extends Component {
 
     changeHandler = e => {
         this.setState({ [e.target.name]: e.target.value })
+        console.log(e.target.value)
     }
 
     handleSubmit = e => {
@@ -127,19 +129,18 @@ export default class Incluir extends Component {
                             required />
 
                         <br></br><br></br>
+                        <h3>Categoria</h3>
                         <Select
                             native
+                            name="categoria"
                             value={categoria}
                             onChange={this.changeHandler}
-                            inputProps={{
-                                name: 'age',
-                                id: 'age-native-simple',
-                            }}
+                            style={{ width: "50vmin" }}
                         >
-                            <option aria-label="None" value="" />
-                            <option value={10}>Ten</option>
-                            <option value={20}>Twenty</option>
-                            <option value={30}>Thirty</option>
+
+                            <option value="valor1">Valor 1</option>
+                            <option value="valor2">Valor 2</option>
+                            <option value="valor3">Valor 3</option>
                         </Select>
                         <br></br><br></br>
                         Selecione a imagem do Anime <br></br><br></br>

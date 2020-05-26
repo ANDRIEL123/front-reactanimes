@@ -63,12 +63,23 @@ export default class Menu extends Component {
         e.preventDefault();
     }
 
+    /* 
     filterAnimes = (animes, query) => {
         var filteredArray = animes.filter(anime => {
             return anime.title.toLowerCase().indexOf(query.toLowerCase()) >= 0;
         });
         this.setState({ animesAux: filteredArray })
     };
+    */
+
+    loadFilterAnimes = async () => {
+        const response = await api.get('/animes/filter/animes', {
+            titleAnime: this.state.search
+        })
+
+        console.log(response.data.response)
+        console.log(this.state.search)
+    }
 
     removerAnime = (anime, index) => {
         const { animesAux } = this.state
@@ -106,10 +117,10 @@ export default class Menu extends Component {
                 </div>
                 <div className="search">
                     <TextField label="Pesquise um anime"
-                        onKeyDown={(event) => { if (event.keyCode === 13) { this.filterAnimes(animes, search) } }}
+                        onKeyDown={(event) => { if (event.keyCode === 13) { this.loadFilterAnimes() } }}
                         type="text"
                         onChange={this.handleChangeSearch.bind(this)} />
-                    <Button variant="contained" type="submit" color="primary" onClick={() => this.filterAnimes(animes, search)} >Pesquisar anime</Button>
+                    <Button variant="contained" type="submit" color="primary" onClick={() => this.loadFilterAnimes()} >Pesquisar anime</Button>
                 </div>
 
 
