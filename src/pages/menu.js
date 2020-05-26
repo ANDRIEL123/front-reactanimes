@@ -34,19 +34,19 @@ export default class Menu extends Component {
         })
         console.log(response.data.response)
     }
-
-    previousPage = () => {
-        let { page } = this.state
-        if (this.state.page > 0) {
-            this.setState({ page: page - 1 })
+    /*
+        previousPage = () => {
+            let { page } = this.state
+            if (this.state.page > 0) {
+                this.setState({ page: page - 1 })
+            }
         }
-    }
-
-    nextPage = () => {
-        let { page } = this.state
-        this.setState({ page: page + 1 })
-    }
-
+    
+        nextPage = () => {
+            let { page } = this.state
+            this.setState({ page: page + 1 })
+        }
+    */
     componentDidMount() {
         this.loadAnimesApi()
     }
@@ -89,7 +89,7 @@ export default class Menu extends Component {
     }
 
     baseUrlUploads = (imagem) => {
-        return `http://localhost:3000/uploads/${imagem}`
+        return `${process.env.REACT_APP_API_URL}/uploads/${imagem}`
     }
 
     render() {

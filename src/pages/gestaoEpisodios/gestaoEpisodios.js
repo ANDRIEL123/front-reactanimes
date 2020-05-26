@@ -48,7 +48,7 @@ function GestaoEpisodios() {
     };
 
     const baseUrlUploads = (imagem) => {
-        return `http://localhost:3000/uploads/${imagem}`
+        return `${process.env.REACT_APP_API_URL}/uploads/${imagem}`
     }
 
     return (

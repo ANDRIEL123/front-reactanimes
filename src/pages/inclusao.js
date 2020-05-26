@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import Input from '@material-ui/core/Input';
 import api from '../services/api'
+import Select from '@material-ui/core/Select';
 import Header from './header'
 import './inclusao.css'
 
@@ -11,7 +12,8 @@ export default class Incluir extends Component {
         title: '',
         description: '',
         key: '',
-        selectedFile: null
+        selectedFile: null,
+        categoria: ''
     }
 
     changeHandler = e => {
@@ -85,7 +87,7 @@ export default class Incluir extends Component {
 
 
     render() {
-        const { title, description, key } = this.state
+        const { title, description, key, categoria } = this.state
         return (
             <div>
                 <Header />
@@ -114,6 +116,7 @@ export default class Incluir extends Component {
                             onChange={this.changeHandler}
                             required />
                         <br></br><br></br>
+
                         <TextField
                             label="Key do Anime"
                             type="text"
@@ -123,6 +126,21 @@ export default class Incluir extends Component {
                             onChange={this.changeHandler}
                             required />
 
+                        <br></br><br></br>
+                        <Select
+                            native
+                            value={categoria}
+                            onChange={this.changeHandler}
+                            inputProps={{
+                                name: 'age',
+                                id: 'age-native-simple',
+                            }}
+                        >
+                            <option aria-label="None" value="" />
+                            <option value={10}>Ten</option>
+                            <option value={20}>Twenty</option>
+                            <option value={30}>Thirty</option>
+                        </Select>
                         <br></br><br></br>
                         Selecione a imagem do Anime <br></br><br></br>
                         <div className="input-file">
