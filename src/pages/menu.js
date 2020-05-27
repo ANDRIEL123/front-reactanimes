@@ -29,8 +29,7 @@ export default class Menu extends Component {
         const response = await api('/animes')
 
         this.setState({
-            animes: response.data.response,
-            animesAux: response.data.response
+            animes: response.data.response
         })
         console.log(response.data.response)
     }
@@ -74,11 +73,13 @@ export default class Menu extends Component {
 
     loadFilterAnimes = async () => {
         const response = await api.get('/animes/filter/animes', {
-            titleAnime: this.state.search
+            //Envio ao back o parametro titleAnime abaixo, no back ficando req.query.titleAnime
+            params: {
+                titleAnime: this.state.search
+            }
         })
-
+        this.setState({ animes: response.data.response })
         console.log(response.data.response)
-        console.log(this.state.search)
     }
 
     removerAnime = (anime, index) => {
@@ -127,13 +128,14 @@ export default class Menu extends Component {
                 <div className="animes">
                     <h2>Listagem dos Animes</h2>
 
-                    {animesAux.map((anime, index) => (
+                    {animes.map((anime, index) => (
 
                         < div className="list-animes" key={anime._key} >
                             <br></br>
+                            {console.log(anime)}
                             <img src={this.baseUrlUploads(anime.imgAnime)} width="125px" height="100px" />
-                            <h3>{anime.title}</h3>
-                            <p>{anime.description}</p>
+                            <h3>{anime.titleAnime}</h3>
+                            <p>{anime.descriptionAnime}</p>
                             <div className="buttons">
                                 <Link to={`/update-animes/${anime.id_anime}`}>
                                     <Button
