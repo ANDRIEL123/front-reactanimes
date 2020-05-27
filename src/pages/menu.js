@@ -26,28 +26,44 @@ export default class Menu extends Component {
     }
 
     loadAnimesApi = async (page = 1) => {
-        const response = await api('/animes')
+        const response = await api('/animes', {
+            params: {
+                page: page
+            }
+        })
 
         this.setState({
             animes: response.data.response
         })
         console.log(response.data.response)
     }
-    /*
-        previousPage = () => {
-            let { page } = this.state
-            if (this.state.page > 0) {
-                this.setState({ page: page - 1 })
-            }
+
+    previousPage = () => {
+        let { page } = this.state
+        const pageAux = page
+
+        if (this.state.page > 0) {
+            this.setState({ page: page - 1 })
         }
-    
-        nextPage = () => {
-            let { page } = this.state
-            this.setState({ page: page + 1 })
-        }
-    */
+
+        const pageNumber = pageAux - 1
+
+        this.loadAnimesApi(pageNumber)
+    }
+
+    nextPage = () => {
+        let { page } = this.state
+        const pageAux = page
+
+        this.setState({ page: page + 1 })
+
+        const pageNumber = pageAux + 1
+
+        this.loadAnimesApi(pageNumber)
+    }
+
     componentDidMount() {
-        this.loadAnimesApi()
+        this.loadAnimesApi(this.state.page)
     }
 
     handleChangeSearch = (e) => {
@@ -73,7 +89,8 @@ export default class Menu extends Component {
 
     loadFilterAnimes = async () => {
         const response = await api.get('/animes/filter/animes', {
-            //Envio ao back o parametro titleAnime abaixo, no back ficando req.query.titleAnime
+            //Envio ao back o parametro (query)
+            //titleAnime abaixo, no back ficando req.query.titleAnime
             params: {
                 titleAnime: this.state.search
             }
@@ -137,7 +154,7 @@ export default class Menu extends Component {
                             <h3>{anime.titleAnime}</h3>
                             <p>{anime.descriptionAnime}</p>
                             <div className="buttons">
-                                <Link to={`/update-animes/${anime.id_anime}`}>
+                                <Link to={`/update-animes/${anime.idanimes}`}>
                                     <Button
                                         variant="contained"
                                         className="btn-edit"
@@ -146,7 +163,7 @@ export default class Menu extends Component {
                                     > Editar</Button>
                                 </Link>
                                 {/* Gestão dos episodios */}
-                                <Link to={`/gerir-episodios/${anime.id_anime}`}>
+                                <Link to={`/gerir-episodios/${anime.idanimes}`}>
                                     < Button
                                         variant="contained"
                                         className="btn-gerir"
@@ -167,6 +184,11 @@ export default class Menu extends Component {
                         </div>
 
                     ))}
+                    <div className="pages-animes">
+                        <Button variant="contained" className="btn-ant" type="submit" color="primary" onClick={() => this.previousPage()} >Página anterior</Button>
+                        <h3>Página {page}</h3>
+                        <Button variant="contained" className="btn-prox" type="submit" color="primary" onClick={() => this.nextPage()} >Próxima Página</Button>
+                    </div>
                     <div>
                         <h3> by Andriel Friedrich © </h3>
                     </div>
