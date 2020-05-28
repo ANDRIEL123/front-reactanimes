@@ -12,12 +12,13 @@ import Img from './wallpaper_batman-JS.png'
 export default class Menu extends Component {
     state = {
         animes: [],
-        animesAux: [],
+        numRegisters: 0,
         search: '',
         title: '',
         description: '',
         key: '',
-        page: 1
+        page: 1,
+        limitPage: 1
     }
 
     pegaUrlAtual = () => {
@@ -26,37 +27,62 @@ export default class Menu extends Component {
     }
 
     loadAnimesApi = async (page = 1) => {
+        const { numRegisters } = this.state
+
+        //FAÇO UMA REQUISIÇÃO PARA A ROTA /animes e passo o parametro Page
+        //para informar ao back em que page está, no back ficaria:
+        //req.query.page
         const response = await api('/animes', {
             params: {
                 page: page
             }
         })
 
+        //Pego o objeto retornado do MYSQL informando o número de registros
+        //Utilizando o SQL_CALC_FOUND_ROWS e após SELECT FOUND_ROWS() para descobrir
+        //A quantidade de registros, avalie o back
+        let numRegistros = Object.values(response.data.numRegisters)
+
+        //Se o numero de registros da tabela animes for maior que 10, então
+        //A aplicação possuí mais de uma página, dessa forma divido por 10
+        //que é o limite de registros por página e aplico a regra conforme
+        //função ajustaPageRegisters()
+        if (numRegistros[0] > 10) {
+            this.setState({ limitPage: this.ajustaPageRegisters(numRegisters / 10) })
+        } else {
+            this.setState({ limitPage: 1 })
+        }
+
         this.setState({
-            animes: response.data.response
+            animes: response.data.response,
+            numRegisters: numRegistros[0]
         })
-        console.log(response.data.response)
+    }
+
+    ajustaPageRegisters = (number) => {
+        if ((number - parseInt(number)) === 0) {
+            return parseInt(number)
+        } else {
+            return parseInt(number) + 1
+        }
     }
 
     previousPage = () => {
         let { page } = this.state
         const pageAux = page
 
-        if (this.state.page > 0) {
+        if (this.state.page > 1) {
             this.setState({ page: page - 1 })
+            const pageNumber = pageAux - 1
+            this.loadAnimesApi(pageNumber)
         }
-
-        const pageNumber = pageAux - 1
-
-        this.loadAnimesApi(pageNumber)
     }
 
     nextPage = () => {
-        let { page } = this.state
+        let { page, numRegisters, limitPage } = this.state
         const pageAux = page
 
         this.setState({ page: page + 1 })
-
         const pageNumber = pageAux + 1
 
         this.loadAnimesApi(pageNumber)
@@ -88,15 +114,21 @@ export default class Menu extends Component {
     */
 
     loadFilterAnimes = async () => {
-        const response = await api.get('/animes/filter/animes', {
-            //Envio ao back o parametro (query)
-            //titleAnime abaixo, no back ficando req.query.titleAnime
-            params: {
-                titleAnime: this.state.search
-            }
-        })
-        this.setState({ animes: response.data.response })
-        console.log(response.data.response)
+        const { search } = this.state
+        //SÓ CONSULTO SE FOR PELOMENOS 2 LETRAS NO FILTRO
+        if (search.length > 1) {
+            const response = await api.get('/animes/filter/animes', {
+                //Envio ao back o parametro (query)
+                //titleAnime abaixo, no back ficando req.query.titleAnime
+                params: {
+                    titleAnime: search
+                }
+            })
+            this.setState({ animes: response.data.response, page: 1, limitPage: 1 })
+            console.log(response.data.response)
+        } else {
+            alert('Digite pelo menos 2 letras na pesquisa.')
+        }
     }
 
     removerAnime = (anime, index) => {
@@ -122,7 +154,7 @@ export default class Menu extends Component {
     }
 
     render() {
-        const { animes, animesAux, search, page } = this.state
+        const { animes, page, limitPage } = this.state
         return (
             <div className="main-menu">
                 <Header />
@@ -185,9 +217,9 @@ export default class Menu extends Component {
 
                     ))}
                     <div className="pages-animes">
-                        <Button variant="contained" className="btn-ant" type="submit" color="primary" onClick={() => this.previousPage()} >Página anterior</Button>
+                        <Button variant="contained" disabled={page === 1} className="btn-ant" type="submit" color="primary" onClick={() => this.previousPage()} >Página anterior</Button>
                         <h3>Página {page}</h3>
-                        <Button variant="contained" className="btn-prox" type="submit" color="primary" onClick={() => this.nextPage()} >Próxima Página</Button>
+                        <Button variant="contained" disabled={page === limitPage} className="btn-prox" type="submit" color="primary" onClick={() => this.nextPage()} >Próxima Página</Button>
                     </div>
                     <div>
                         <h3> by Andriel Friedrich © </h3>

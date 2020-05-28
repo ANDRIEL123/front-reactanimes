@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import Input from '@material-ui/core/Input';
+import Checkbox from '@material-ui/core/Checkbox';
 import api from '../services/api'
 import Header from './header'
 import './inclusao.css'
-import Select from '@material-ui/core/Select';
 
 
 export default class Incluir extends Component {
@@ -130,18 +129,24 @@ export default class Incluir extends Component {
 
                         <br></br><br></br>
                         <h3>Categoria</h3>
-                        <Select
-                            native
-                            name="categoria"
-                            value={categoria}
-                            onChange={this.changeHandler}
-                            style={{ width: "50vmin" }}
-                        >
-
-                            <option value="valor1">Valor 1</option>
-                            <option value="valor2">Valor 2</option>
-                            <option value="valor3">Valor 3</option>
-                        </Select>
+                        <Checkbox
+                            checked
+                            onChange={""}
+                            name="checkedB"
+                            color="primary"
+                        />Artes Marciais
+                        <Checkbox
+                            checked
+                            onChange={""}
+                            name="checkedB"
+                            color="primary"
+                        />Echi
+                        <Checkbox
+                            checked
+                            onChange={""}
+                            name="checkedB"
+                            color="primary"
+                        />Hentai
                         <br></br><br></br>
                         Selecione a imagem do Anime <br></br><br></br>
                         <div className="input-file">
