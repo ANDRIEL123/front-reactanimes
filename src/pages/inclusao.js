@@ -13,7 +13,8 @@ export default class Incluir extends Component {
         description: '',
         key: '',
         selectedFile: null,
-        categoria: ''
+        categorias: [],
+        checked: false
     }
 
     changeHandler = e => {
@@ -23,6 +24,19 @@ export default class Incluir extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
+    }
+
+    handleChangeChecked = e => {
+        this.setState({ checked: e.target.checked })
+        console.log(e.target.checked)
+        if (e.target.checked) {
+            this.setState({ checked: true })
+            console.log(`Checked é ${true}`)
+            this.setState({ categorias: this.state.categorias.push() })
+        } else {
+            this.setState({ checked: false })
+            console.log(`Checked é ${false}`)
+        }
     }
 
     pegaUrlAtual = () => {
@@ -88,92 +102,116 @@ export default class Incluir extends Component {
 
 
     render() {
-        const { title, description, key, categoria } = this.state
+        const { title, description, key, checked } = this.state
         return (
             <div>
                 <Header />
-                <form onSubmit={this.handleSubmit}>
-                    <div className="inclui-anime">
+                <center>
+                    <form onSubmit={this.handleSubmit}>
+                        <div className="inclui-anime">
 
-                        <h2>Inclusão de Anime</h2>
-                        <TextField
-                            label="Título do Anime"
-                            type="text"
-                            name="title"
-                            value={title}
-                            onChange={this.changeHandler}
-                            required />
-                        <br></br><br></br>
+                            <h2>Inclusão de Anime</h2>
+                            <TextField
+                                label="Título do Anime"
+                                type="text"
+                                name="title"
+                                value={title}
+                                onChange={this.changeHandler}
+                                required />
+                            <br></br><br></br>
 
-                        <TextField
-                            label="Descrição do Anime"
-                            type="text"
-                            name="description"
-                            multiline
-                            rows="4"
-                            className="description"
-                            variant="outlined"
-                            value={description}
-                            onChange={this.changeHandler}
-                            required />
-                        <br></br><br></br>
+                            <TextField
+                                label="Descrição do Anime"
+                                type="text"
+                                name="description"
+                                multiline
+                                rows="4"
+                                className="description"
+                                variant="outlined"
+                                value={description}
+                                onChange={this.changeHandler}
+                                required />
+                            <br></br><br></br>
 
-                        <TextField
-                            label="Key do Anime"
-                            type="text"
-                            name="key"
-                            className="key"
-                            value={key}
-                            onChange={this.changeHandler}
-                            required />
+                            <TextField
+                                label="Key do Anime"
+                                type="text"
+                                name="key"
+                                className="key"
+                                value={key}
+                                onChange={this.changeHandler}
+                                required />
 
-                        <br></br><br></br>
-                        <h3>Categoria</h3>
-                        <Checkbox
-                            checked
-                            onChange={""}
-                            name="checkedB"
-                            color="primary"
-                        />Artes Marciais
-                        <Checkbox
-                            checked
-                            onChange={""}
-                            name="checkedB"
-                            color="primary"
-                        />Echi
-                        <Checkbox
-                            checked
-                            onChange={""}
-                            name="checkedB"
-                            color="primary"
-                        />Hentai
-                        <br></br><br></br>
+                            <br></br><br></br>
+                            <h3>Categorias</h3>
+                            <div className="categorias">
+                                <div className="check">
+                                    <Checkbox
+                                        onClick={this.handleChangeChecked}
+                                        className="check"
+                                        color="primary"
+                                        value={1}
+                                    />Artes Marciais
+                                </div>
+                                <div className="check">
+                                    <Checkbox
+                                        onClick={this.handleChangeChecked}
+                                        className="check"
+                                        color="primary"
+                                    />Artes Marciais
+                                </div>
+                                <div className="check">
+                                    <Checkbox
+                                        onClick={this.handleChangeChecked}
+                                        className="check"
+                                        color="primary"
+                                    />Artes Marciais
+                                </div>
+                                <div className="check">
+                                    <Checkbox
+                                        onClick={this.handleChangeChecked}
+                                        className="check"
+                                        color="primary"
+                                    />Artes Marciais
+                                </div>
+                                <div className="check">
+                                    <Checkbox
+                                        onClick={this.handleChangeChecked}
+                                        className="check"
+                                        color="primary"
+                                    />Artes Marciais
+                                </div>
+
+                            </div>
+
+                            <br></br><br></br>
                         Selecione a imagem do Anime <br></br><br></br>
-                        <div className="input-file">
+                            <div className="input-file">
+                                <Button
+                                    variant="contained"
+                                    type="submit"
+                                    color="primary"
+                                ><input
+                                        type="file"
+                                        onChange={this.fileSelectedHandler}
+                                    /></Button>
+
+                            </div>
+                            <br></br><br></br>
+
                             <Button
                                 variant="contained"
                                 type="submit"
                                 color="primary"
-                            ><input
-                                    type="file"
-                                    onChange={this.fileSelectedHandler}
-                                /></Button>
+                                onClick={() => this.addAnime(title, description, key)}
+                            >Incluir anime</Button>
 
                         </div>
-                        <br></br><br></br>
-
-                        <Button
-                            variant="contained"
-                            type="submit"
-                            color="primary"
-                            onClick={() => this.addAnime(title, description, key)}
-                        >Incluir anime</Button>
-
-                    </div>
-                    <div>
-                        <h3> by Andriel Friedrich © </h3>
-                    </div>
-                </form>
+                        <div>
+                            <h3> by Andriel Friedrich © </h3>
+                        </div>
+                    </form>
+                </center>
             </div>
 
         )
