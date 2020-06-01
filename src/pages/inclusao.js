@@ -168,7 +168,7 @@ export default class Incluir extends Component {
                             <br></br><br></br>
                             <h3>Categorias</h3>
                             {categorias.map(value => (
-                                <div className="categorias">
+                                <div className="categorias-anime">
                                     <div className="check">
                                         <Checkbox
                                             onClick={this.handleChangeChecked}

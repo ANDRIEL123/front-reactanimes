@@ -1,0 +1,11 @@
+.main-categorias .categorias {
+    padding: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.main-categorias .categorias .cat{
+    margin-top: 2vmin;
+    border: 1px solid rgb(59, 57, 57);
+    border-radius: 5px;
+}
