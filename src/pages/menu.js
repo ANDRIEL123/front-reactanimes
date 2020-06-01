@@ -6,7 +6,6 @@ import Update from './updateAnime'
 import Header from './header'
 import { Link } from 'react-router-dom'
 import './menu.css'
-import Img from './wallpaper_batman-JS.png'
 
 
 export default class Menu extends Component {
@@ -58,6 +57,11 @@ export default class Menu extends Component {
             numRegisters: numRegistros[0]
         })
     }
+    //ARREDONDAMENTO, SE O NUMERO - O NUMERO ARREDONDADO FOR IGUAL
+    //A 0, LOGO O NÚMERO É REDONDO COM (20, 30, 40)
+    //JÁ O CONTRÁRIO, TEMOS UM NÚMERO QUE NÃO É DE REDONDO, LOGO
+    //TEMOS QUE JOGAR PARA CIMA PARA LISTAR ESSES ELEMENTOS
+    //TAMBÉM
 
     ajustaPageRegisters = (number) => {
         if ((number - parseInt(number)) === 0) {
@@ -118,8 +122,8 @@ export default class Menu extends Component {
         //SÓ CONSULTO SE FOR PELOMENOS 2 LETRAS NO FILTRO
         if (search.length > 1) {
             const response = await api.get('/animes/filter/animes', {
-                //Envio ao back o parametro (query)
-                //titleAnime abaixo, no back ficando req.query.titleAnime
+                //Envio ao back o parametro (query) titleAnime abaixo
+                //no back ficando req.query.titleAnime
                 params: {
                     titleAnime: search
                 }
@@ -132,11 +136,11 @@ export default class Menu extends Component {
     }
 
     removerAnime = (anime, index) => {
-        const { animesAux } = this.state
-        api.delete(`/animes/${anime.id_anime}`)
+        const { page } = this.state
+        console.log(anime)
+        api.delete(`/animes/${anime.idanimes}`)
             .then(response => {
-                animesAux.splice(index, 1)
-                this.setState({ animesAux: animesAux })
+                this.loadAnimesApi(page)
 
                 console.log(response)
             })
@@ -158,13 +162,23 @@ export default class Menu extends Component {
         return (
             <div className="main-menu">
                 <Header />
-                <div>
-                    <Button variant="contained"
-                        type="submit"
-                        color="primary"
-                        onClick={() => this.gerirRotas("/incluir-anime")}
-                    >Incluir um novo anime</Button>
+                <div className="btn-menu">
+                    <div>
+                        <Button variant="contained"
+                            type="submit"
+                            color="primary"
+                            onClick={() => this.gerirRotas("/incluir-anime")}
+                        >Incluir Anime</Button>
+                    </div>
+                    <div>
+                        <Button variant="contained"
+                            type="submit"
+                            color="primary"
+                            onClick={() => this.gerirRotas("/gerir-categorias")}
+                        >Gerir Categorias</Button>
+                    </div>
                 </div>
+
                 <div className="search">
                     <TextField label="Pesquise um anime"
                         onKeyDown={(event) => { if (event.keyCode === 13) { this.loadFilterAnimes() } }}
@@ -172,7 +186,6 @@ export default class Menu extends Component {
                         onChange={this.handleChangeSearch.bind(this)} />
                     <Button variant="contained" type="submit" color="primary" onClick={() => this.loadFilterAnimes()} >Pesquisar anime</Button>
                 </div>
-
 
                 <div className="animes">
                     <h2>Listagem dos Animes</h2>

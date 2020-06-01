@@ -14,7 +14,17 @@ export default class Incluir extends Component {
         key: '',
         selectedFile: null,
         categorias: [],
+        categoriasSelected: [],
         checked: false
+    }
+
+    loadCategorias = async () => {
+        const response = await api.get('/categorias')
+        this.setState({ categorias: response.data.response })
+    }
+
+    componentDidMount() {
+        this.loadCategorias()
     }
 
     changeHandler = e => {
@@ -24,19 +34,6 @@ export default class Incluir extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
-    }
-
-    handleChangeChecked = e => {
-        this.setState({ checked: e.target.checked })
-        console.log(e.target.checked)
-        if (e.target.checked) {
-            this.setState({ checked: true })
-            console.log(`Checked é ${true}`)
-            this.setState({ categorias: this.state.categorias.push() })
-        } else {
-            this.setState({ checked: false })
-            console.log(`Checked é ${false}`)
-        }
     }
 
     pegaUrlAtual = () => {
@@ -50,12 +47,14 @@ export default class Incluir extends Component {
 
     addAnime = (title, description, key) => {
         //FAZ ISSO SE TIVER UM ARQUIVO SELECIONADO
+        console.log(title, description, key)
         if (this.state.selectedFile) {
             const fd = new FormData();
             fd.append("titleAnime", title);
             fd.append("keyAnime", key);
             fd.append("descriptionAnime", description);
             fd.append("imgAnime", this.state.selectedFile, this.state.selectedFile.name)
+            fd.append("categorias", this.state.categoriasSelected)
 
 
             api.post("/animes", fd)
@@ -75,7 +74,8 @@ export default class Incluir extends Component {
             api.post('/animes', {
                 titleAnime: title,
                 descriptionAnime: description,
-                keyAnime: key
+                keyAnime: key,
+                categorias: this.state.categoriasSelected
             })
                 .then(response => {
                     console.log(response);
@@ -93,6 +93,29 @@ export default class Incluir extends Component {
 
     }
 
+    handleChangeChecked = e => {
+        const { categoriasSelected } = this.state
+        let auxArray = categoriasSelected
+
+        this.setState({ checked: e.target.checked })
+        console.log(e.target.value)
+        if (e.target.checked) {
+            this.setState({ checked: true })
+            auxArray.push(e.target.value)
+            console.log(`Checked é ${true}`)
+            this.setState({ categoriasSelected: auxArray })
+        } else {
+            this.setState({ checked: false })
+            console.log(`Checked é ${false}`)
+            if (auxArray.length === 1) {
+                auxArray.pop()
+            } else {
+                auxArray.splice(1, auxArray.indexOf(e.target.value))
+            }
+            this.setState({ categoriasSelected: auxArray })
+        }
+    }
+
     fileSelectedHandler = e => {
         this.setState({
             selectedFile: e.target.files[0]
@@ -102,7 +125,7 @@ export default class Incluir extends Component {
 
 
     render() {
-        const { title, description, key, checked } = this.state
+        const { title, description, key, categorias } = this.state
         return (
             <div>
                 <Header />
@@ -144,45 +167,19 @@ export default class Incluir extends Component {
 
                             <br></br><br></br>
                             <h3>Categorias</h3>
-                            <div className="categorias">
-                                <div className="check">
-                                    <Checkbox
-                                        onClick={this.handleChangeChecked}
-                                        className="check"
-                                        color="primary"
-                                        value={1}
-                                    />Artes Marciais
+                            {categorias.map(value => (
+                                <div className="categorias">
+                                    <div className="check">
+                                        <Checkbox
+                                            onClick={this.handleChangeChecked}
+                                            className="check"
+                                            color="primary"
+                                            value={value.idcategorias}
+                                        />{value.titleCategoria}
+                                    </div>
                                 </div>
-                                <div className="check">
-                                    <Checkbox
-                                        onClick={this.handleChangeChecked}
-                                        className="check"
-                                        color="primary"
-                                    />Artes Marciais
-                                </div>
-                                <div className="check">
-                                    <Checkbox
-                                        onClick={this.handleChangeChecked}
-                                        className="check"
-                                        color="primary"
-                                    />Artes Marciais
-                                </div>
-                                <div className="check">
-                                    <Checkbox
-                                        onClick={this.handleChangeChecked}
-                                        className="check"
-                                        color="primary"
-                                    />Artes Marciais
-                                </div>
-                                <div className="check">
-                                    <Checkbox
-                                        onClick={this.handleChangeChecked}
-                                        className="check"
-                                        color="primary"
-                                    />Artes Marciais
-                                </div>
+                            ))}
 
-                            </div>
 
                             <br></br><br></br>
                         Selecione a imagem do Anime <br></br><br></br>
