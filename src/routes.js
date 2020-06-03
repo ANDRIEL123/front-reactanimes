@@ -9,6 +9,8 @@ import GestaoEpisodios from './pages/gestaoEpisodios/gestaoEpisodios'
 import IncluirEpisodio from './pages/gestaoEpisodios/incluirEpisodio'
 import UpdateEpisodio from './pages/gestaoEpisodios/updateEpisodio'
 import GestaoCategorias from './pages/gestaoCategorias/gestaoCategorias'
+import IncluirCategoria from './pages/gestaoCategorias/incluir-categoria'
+import UpdateCategoria from './pages/gestaoCategorias/update-categoria'
 
 import {
     Routes, Route
@@ -34,6 +36,10 @@ export default function mainRoutes() {
                 <Route path="/incluir-episodio/:id_anime" element={<IncluirEpisodio />} />
                 <Route path="/update-episodio/:id_episodio" element={<UpdateEpisodio />} />
                 <Route path="/gerir-categorias" element={<GestaoCategorias />} />
+                <Route path="/incluir-categoria" element={<IncluirCategoria />} />
+                <Route path="/update-categoria/:id_categoria" element={<UpdateCategoria />} />
+
+
             </Routes>
         </div>
     )

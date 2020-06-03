@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
 import Header from '../header'
 import api from '../../services/api'
@@ -27,24 +28,25 @@ export default function GestaoCategorias() {
         <div className="main-categorias">
             <Header />
             <h2>Gestao categorias</h2>
-            <Button
-                variant="contained"
-                type="submit"
-                color="primary"
-                onClick={""}
-            >Incluir Categoria</Button>
+            <Link to="/incluir-categoria">
+                <Button
+                    variant="contained"
+                    type="submit"
+                    color="primary"
+                >Incluir Categoria</Button>
+            </Link>
             <div className="categorias">
                 {categorias.map(categoria => (
                     <div className="cat">
                         <h4>{categoria.titleCategoria}</h4>
-                        {console.log(categoria)}
-                        <Button
-                            style={{ marginRight: "2vmin" }}
-                            variant="contained"
-                            type="submit"
-                            color="primary"
-                            onClick={""}
-                        >Editar</Button>
+                        <Link to={`/update-categoria/${categoria.idcategorias}`}>
+                            <Button
+                                style={{ marginRight: "2vmin" }}
+                                variant="contained"
+                                type="submit"
+                                color="primary"
+                            >Editar</Button>
+                        </Link>
 
                         <Button
                             style={{ marginLeft: "2vmin" }}
@@ -61,7 +63,7 @@ export default function GestaoCategorias() {
                     </div>
                 ))}
             </div>
-        </div>
+        </div >
 
 
     )
