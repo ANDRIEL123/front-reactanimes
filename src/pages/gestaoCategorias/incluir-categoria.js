@@ -36,8 +36,6 @@ function IncluirCategoria() {
             } else {
                 alert('Problema na inclusão de categoria.')
             }
-        } else {
-            alert('Preencha ao menos o título')
         }
     }
 

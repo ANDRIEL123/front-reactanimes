@@ -38,14 +38,12 @@ function UpdateCategoria() {
                 titleCategoria: title,
                 descriptionCategoria: description
             })
-            if (response.status = 200) {
+            if (response.status === 200) {
                 alert('Categoria atualizada com sucesso!')
-                navigate('/gerir-categorias')
+                gerirRotas('/gerir-categorias')
             } else {
                 alert('Problema na atualização de categoria.')
             }
-        } else {
-            alert('Preencha ao menos o título')
         }
     }
 
@@ -81,7 +79,7 @@ function UpdateCategoria() {
                     className="btn-atualizar"
                     color="primary"
                     onClick={() => updateCategoria()}
-
+                    type="submit"
                 >Atualizar</Button>
                 <Link to="/gerir-categorias">
                     <Button
@@ -89,7 +87,6 @@ function UpdateCategoria() {
                         variant="contained"
                         className="btn-cancel"
                         color="primary"
-                        onClick={() => navigate(`/gerir-episodios/${id_categoria}`)}
                     >Cancelar</Button>
                 </Link>
             </form>

@@ -20,9 +20,7 @@ export default function GestaoCategorias() {
     const deleteCategoria = async (id) => {
         await api.delete(`/categorias/${id}`)
         loadCategorias()
-
     }
-
 
     return (
         <div className="main-categorias">
