@@ -14,7 +14,6 @@ function Update() {
     let [selectedFile, setFile] = useState('')
     let [title, setTitle] = useState('')
     let [description, setDescription] = useState('')
-    let [key, setKey] = useState('')
     let [anime, setAnime] = useState([])
 
     const pegaUrlAtual = () => {
@@ -26,32 +25,36 @@ function Update() {
         window.location.href = this.pegaUrlAtual() + rota
     }
 
-    const updateAnime = async (id_anime, description, title, key) => {
+    const updateAnime = async (id_anime, description, title) => {
         if (selectedFile) {
             const fd = new FormData();
             fd.append("titleAnime", title);
-            fd.append("keyAnime", key);
             fd.append("descriptionAnime", description);
             fd.append("imgAnime", selectedFile, selectedFile.name)
 
             api.patch(`/animes/${id_anime}`, fd)
-                .then(response => console.log(response))
+                .then(function (response) {
+                    console.log(response);
+                    alert('Anime alterado com sucesso')
+                    navigate(`/dashboard`)
+                })
                 .catch(error => console.error(error))
+        } else {
+            await api.patch(`/animes/${id_anime}`, {
+                titleAnime: title,
+                descriptionAnime: description
+            })
+                .then(function (response) {
+                    console.log(response);
+                    alert('Anime alterado com sucesso')
+                    navigate(`/dashboard`)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         }
 
-        api.patch(`/animes/${id_anime}`, {
-            titleAnime: title,
-            descriptionAnime: description,
-            keyAnime: key
-        })
-            .then(function (response) {
-                console.log(response);
-                alert('Episodio alterado com sucesso')
-                navigate(`/gerir-episodios/${id_anime}`)
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+
     }
 
 
@@ -60,7 +63,6 @@ function Update() {
         anime = response.data.response //Recebendo os dados do anime
         setTitle(anime.titleAnime)
         setDescription(anime.descriptionAnime)
-        setKey(anime.keyAnime)
     }
 
     const fileSelectedHandler = e => {
@@ -88,15 +90,6 @@ function Update() {
                     onChange={e => setTitle(e.target.value)}
                     required />
                 <br></br>
-                <TextField
-                    style={{ width: "80vmin" }}
-                    label="Key"
-                    type="text"
-                    name="key"
-                    value={key}
-                    onChange={e => setKey(e.target.value)}
-                    required />
-                <br></br><br></br>
                 <TextField
                     style={{ width: "80vmin" }}
                     label="Descrição do Anime"
@@ -130,7 +123,7 @@ function Update() {
                     variant="contained"
                     className="btn-atualiza"
                     color="primary"
-                    onClick={() => updateAnime(id_anime, description, title, key)}
+                    onClick={() => updateAnime(id_anime, description, title)}
                 >Atualizar</Button>
 
                 <Button

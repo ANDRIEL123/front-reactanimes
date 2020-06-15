@@ -31,7 +31,7 @@ function UpdateEpisodio() {
             const fd = new FormData();
             fd.append("titleEpisodio", title);
             fd.append("descriptionEpisodio", description);
-            fd.append("keyEpisodio", key);
+            fd.append("urlVideo", key);
             fd.append("imgEpisodio", selectedFile, selectedFile.name);
             fd.append("idepisodio", id_episodio);
 
@@ -49,7 +49,7 @@ function UpdateEpisodio() {
             api.patch(`/episodios/${id_episodio}`, {
                 titleEpisodio: title,
                 descriptionEpisodio: description,
-                keyEpisodio: key,
+                urlVideo: key,
                 idepisodio: id_episodio
             })
                 .then(function (response) {
@@ -72,7 +72,7 @@ function UpdateEpisodio() {
 
         setTitle(anime.titleEpisodio)
         setDescription(anime.titleEpisodio)
-        setKey(anime.keyEpisodio)
+        setKey(anime.urlVideo)
         //Pega o id do anime
         setIdanime(anime.idanimes)
 
@@ -105,7 +105,7 @@ function UpdateEpisodio() {
                 <br></br>
                 <TextField
                     style={{ width: "80vmin" }}
-                    label="Key do episódio"
+                    label="URL do Episódio"
                     type="text"
                     name="key"
                     value={key}

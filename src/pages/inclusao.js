@@ -156,16 +156,7 @@ export default class Incluir extends Component {
                                 required />
                             <br></br><br></br>
 
-                            <TextField
-                                label="Key do Anime"
-                                type="text"
-                                name="key"
-                                className="key"
-                                value={key}
-                                onChange={this.changeHandler}
-                                required />
 
-                            <br></br><br></br>
                             <h3>Categorias</h3>
                             {categorias.map(value => (
                                 <div className="categorias-anime">

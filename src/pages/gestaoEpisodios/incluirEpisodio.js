@@ -34,7 +34,7 @@ function IncluirEpisodio() {
             fd.append("titleEpisodio", title);
             fd.append("descriptionEpisodio", description);
             fd.append("keyEpisodio", key);
-            fd.append("imgEpisodio", selectedFile, selectedFile.name);
+            fd.append("urlVideo", selectedFile, selectedFile.name);
             fd.append("idanime", id_anime);
 
             api.post(`/episodios`, fd)
@@ -57,7 +57,7 @@ function IncluirEpisodio() {
             api.post('/episodios', {
                 titleEpisodio: title,
                 descriptionEpisodio: description,
-                keyEpisodio: key,
+                urlVideo: key,
                 idanime: id_anime
             })
                 .then(function (response) {
@@ -84,7 +84,7 @@ function IncluirEpisodio() {
             <form method="POST">
                 <TextField
                     style={{ width: "80vmin" }}
-                    label="Título do Anime"
+                    label="Título do Episódio"
                     type="text"
                     name="title"
                     value={title}
@@ -93,7 +93,7 @@ function IncluirEpisodio() {
                 <br></br><br></br>
                 <TextField
                     style={{ width: "80vmin" }}
-                    label="Description do Anime"
+                    label="Description do Episódio"
                     type="text"
                     multiline
                     rows="4"
@@ -105,7 +105,7 @@ function IncluirEpisodio() {
                 <br></br><br></br>
                 <TextField
                     style={{ width: "80vmin" }}
-                    label="Key do Anime"
+                    label="URL do Episódio"
                     type="text"
                     name="key"
                     value={key}
