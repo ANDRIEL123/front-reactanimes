@@ -20,30 +20,8 @@ function UpdateCategoria() {
     let [title, setTitle] = useState('')
     let [description, setDescription] = useState('')
     let [categorias, setCategorias] = useState([])
-    let [categoriasSelected, setCategoriasSelected] = useState([])
-    let [checked, setChecked] = useState(false)
 
-    const handleChangeChecked = e => {
-        let auxArray = categoriasSelected
 
-        this.setState({ checked: e.target.checked })
-        console.log(e.target.value)
-        if (e.target.checked) {
-            this.setState({ checked: true })
-            auxArray.push(e.target.value)
-            console.log(`Checked é ${true}`)
-            this.setState({ categoriasSelected: auxArray })
-        } else {
-            this.setState({ checked: false })
-            console.log(`Checked é ${false}`)
-            if (auxArray.length === 1) {
-                auxArray.pop()
-            } else {
-                auxArray.splice(1, auxArray.indexOf(e.target.value))
-            }
-            this.setState({ categoriasSelected: auxArray })
-        }
-    }
 
     const loadCategorias = async () => {
         const response = await api.get(`/categorias/${id_categoria}`)

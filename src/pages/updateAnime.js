@@ -8,7 +8,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import Input from '@material-ui/core/Input';
 import api from '../services/api'
 import Header from './header'
-import './inclusao.css'
+import './updateAnime.css'
 
 
 function Update() {
@@ -18,9 +18,11 @@ function Update() {
     let [title, setTitle] = useState('')
     let [description, setDescription] = useState('')
     let [anime, setAnime] = useState([])
-    let [date, setDate] = useState(2020)
-    let [status, setStatus] = useState("Concluído")
+    let [date, setDate] = useState()
+    let [status, setStatus] = useState("")
     let [categorias, setCategorias] = useState([])
+    let [categoriasSelected, setCategoriasSelected] = useState([])
+    let [checked, setChecked] = useState(false)
 
     const pegaUrlAtual = () => {
         const url = window.location.href.split(window.location.pathname)
@@ -72,12 +74,34 @@ function Update() {
 
     }
 
+    const handleChangeChecked = e => {
+        let auxArray = categoriasSelected
+
+        setChecked(e.target.checked)
+        if (e.target.checked) {
+            setChecked(true)
+            auxArray.push(e.target.value)
+            setCategoriasSelected(auxArray)
+        } else {
+            setChecked(false)
+            if (auxArray.length === 1) {
+                auxArray.pop()
+            } else {
+                auxArray.splice(1, auxArray.indexOf(e.target.value))
+            }
+            setCategoriasSelected(auxArray)
+        }
+    }
+
 
     const loadAnime = async () => {
         const response = await api.get(`/animes/${id_anime}`)
         anime = response.data.response //Recebendo os dados do anime
         setTitle(anime.titleAnime)
         setDescription(anime.descriptionAnime)
+        setDate(anime.lancamentoAnime)
+        setStatus(anime.situacaoAnime)
+        loadCategorias()
     }
 
     const fileSelectedHandler = e => {
@@ -92,109 +116,113 @@ function Update() {
     return (
         <div>
             <Header />
-            <div className="update-anime">
+            <center>
+                <div className="update-anime">
 
-                <h2 style={{ color: "rgb(0, 155, 194)" }}>Atualizar dados de uma anime</h2><br></br>
+                    <h2 style={{ color: "rgb(0, 155, 194)" }}>Atualizar dados de uma anime</h2><br></br>
 
-                <TextField
-                    style={{ width: "80vmin" }}
-                    label="Título do Anime"
-                    type="text"
-                    name="title"
-                    value={title}
-                    onChange={e => setTitle(e.target.value)}
-                    required />
-                <br></br>
-                <TextField
-                    style={{ width: "80vmin" }}
-                    label="Descrição do Anime"
-                    multiline
-                    rows="4"
-                    variant="outlined"
-                    type="text"
-                    name="description"
-                    value={description}
-                    onChange={e => setDescription(e.target.value)}
-                    required />
-                <br></br><br></br><br></br>
+                    <TextField
+                        style={{ width: "80vmin" }}
+                        label="Título do Anime"
+                        type="text"
+                        name="title"
+                        value={title}
+                        onChange={e => setTitle(e.target.value)}
+                        required />
+                    <br></br>
+                    <TextField
+                        style={{ width: "80vmin" }}
+                        label="Descrição do Anime"
+                        multiline
+                        rows="4"
+                        variant="outlined"
+                        type="text"
+                        name="description"
+                        value={description}
+                        onChange={e => setDescription(e.target.value)}
+                        required />
+                    <br></br><br></br><br></br>
 
-                <TextField
-                    id="date"
-                    name="date"
-                    onChange={e => setDate(e.target.value)}
-                    label="Ano de Lançamento"
-                    type="number"
-                    value={date}
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                />
+                    <TextField
+                        id="date"
+                        name="date"
+                        onChange={e => setDate(e.target.value)}
+                        label="Ano de Lançamento"
+                        type="number"
+                        value={date}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
 
 
-                <h3>Status do Anime</h3>
-                <Select
-                    labelId="demo-customized-select-label"
-                    id="demo-customized-select"
-                    value={status}
-                    onChange={e => setStatus(e.target.value)}
-                    name="status"
-                >
-                    <MenuItem value="" name="status">
-                        <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={'Em Lançamento'}>Em Lançament</MenuItem>
-                    <MenuItem value={'Cancelado'}>Cancelado</MenuItem>
-                    <MenuItem value={'Concluído'} selected>Concluído</MenuItem>
-                </Select>
+                    <h3>Status do Anime</h3>
+                    <Select
+                        labelId="demo-customized-select-label"
+                        id="demo-customized-select"
+                        value={status}
+                        onChange={e => setStatus(e.target.value)}
+                        name="status"
+                    >
+                        <MenuItem value="" name="status">
+                            <em>None</em>
+                        </MenuItem>
+                        <MenuItem value={'Em Lançamento'}>Em Lançament</MenuItem>
+                        <MenuItem value={'Cancelado'}>Cancelado</MenuItem>
+                        <MenuItem value={'Concluído'} selected>Concluído</MenuItem>
+                    </Select>
 
-                <h3>Categorias</h3>
-                {categorias.map(value => (
-                    <div className="categorias-anime">
-                        <div className="check">
-                            <Checkbox
-                                onClick={this.handleChangeChecked}
-                                className="check"
-                                color="primary"
-                                value={value.idcategorias}
-                            />{value.titleCategoria}
+                    <h3>Categorias</h3>
+
+                    {categorias.map(value => (
+                        <div className="categorias-anime">
+                            {console.log(value)}
+                            <div className="check">
+                                <Checkbox
+                                    onClick={handleChangeChecked}
+                                    className="check"
+                                    color="primary"
+                                    value={value.idcategorias}
+                                />{value.titleCategoria}
+                            </div>
                         </div>
-                    </div>
-                ))}
-
+                    ))}
+                    <br></br>
                 Selecione a imagem do Anime <br></br><br></br>
-                <div className="input-file">
+                    <div className="input-file">
+                        <Button
+                            variant="contained"
+                            type="submit"
+                            color="primary"
+                        ><input
+                                type="file"
+                                onChange={fileSelectedHandler}
+                            /></Button>
+
+                    </div>
+                    <br></br><br></br>
+
                     <Button
-                        variant="contained"
+                        style={{ marginRight: "5vmin" }}
                         type="submit"
+                        variant="contained"
+                        className="btn-atualiza"
                         color="primary"
-                    ><input
-                            type="file"
-                            onChange={fileSelectedHandler}
-                        /></Button>
+                        onClick={() => updateAnime(id_anime, description, title)}
+                    >Atualizar</Button>
 
+                    <Button
+                        style={{ marginLeft: "5vmin" }}
+                        variant="contained"
+                        className="btn-cancel"
+                        color="primary"
+                        onClick={() => navigate(`/dashboard`)}
+                    >Cancelar</Button>
                 </div>
-                <br></br><br></br>
-
-                <Button
-                    style={{ marginRight: "5vmin" }}
-                    type="submit"
-                    variant="contained"
-                    className="btn-atualiza"
-                    color="primary"
-                    onClick={() => updateAnime(id_anime, description, title)}
-                >Atualizar</Button>
-
-                <Button
-                    style={{ marginLeft: "5vmin" }}
-                    variant="contained"
-                    className="btn-cancel"
-                    color="primary"
-                    onClick={() => navigate(`/dashboard`)}
-                >Cancelar</Button>
-            </div>
-            <div>
-                <h3> by Andriel Friedrich © </h3>
-            </div>
+                <div>
+                    <h3> by Andriel Friedrich © </h3>
+                </div>
+            </center>
         </div>
 
     )
