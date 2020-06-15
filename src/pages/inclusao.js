@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import MenuItem from '@material-ui/core/MenuItem';
 import Checkbox from '@material-ui/core/Checkbox';
+import { makeStyles } from '@material-ui/core/styles';
 import api from '../services/api'
+import Select from '@material-ui/core/Select';
 import Header from './header'
 import './inclusao.css'
 
-
 export default class Incluir extends Component {
+
     state = {
         title: '',
         description: '',
@@ -15,7 +18,9 @@ export default class Incluir extends Component {
         selectedFile: null,
         categorias: [],
         categoriasSelected: [],
-        checked: false
+        checked: false,
+        status: 'Concluído',
+        date: 2020
     }
 
     loadCategorias = async () => {
@@ -29,7 +34,6 @@ export default class Incluir extends Component {
 
     changeHandler = e => {
         this.setState({ [e.target.name]: e.target.value })
-        console.log(e.target.value)
     }
 
     handleSubmit = e => {
@@ -45,14 +49,14 @@ export default class Incluir extends Component {
         window.location.href = this.pegaUrlAtual() + rota
     }
 
-    addAnime = (title, description, key) => {
+    addAnime = (title, description, status, date) => {
         //FAZ ISSO SE TIVER UM ARQUIVO SELECIONADO
-        console.log(title, description, key)
         if (this.state.selectedFile) {
             const fd = new FormData();
             fd.append("titleAnime", title);
-            fd.append("keyAnime", key);
             fd.append("descriptionAnime", description);
+            fd.append("situacaoAnime", status);
+            fd.append("lancamentoAnime", date)
             fd.append("imgAnime", this.state.selectedFile, this.state.selectedFile.name)
             fd.append("categorias", this.state.categoriasSelected)
 
@@ -74,7 +78,8 @@ export default class Incluir extends Component {
             api.post('/animes', {
                 titleAnime: title,
                 descriptionAnime: description,
-                keyAnime: key,
+                situacaoAnime: status,
+                lancamentoAnime: date,
                 categorias: this.state.categoriasSelected
             })
                 .then(response => {
@@ -125,7 +130,7 @@ export default class Incluir extends Component {
 
 
     render() {
-        const { title, description, key, categorias } = this.state
+        const { title, description, categorias, status, date } = this.state
         return (
             <div>
                 <Header />
@@ -156,6 +161,35 @@ export default class Incluir extends Component {
                                 required />
                             <br></br><br></br>
 
+
+                            <TextField
+                                id="date"
+                                name="date"
+                                onChange={this.changeHandler}
+                                label="Ano de Lançamento"
+                                type="number"
+                                value={date}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+
+
+                            <h3>Status do Anime</h3>
+                            <Select
+                                labelId="demo-customized-select-label"
+                                id="demo-customized-select"
+                                value={status}
+                                onChange={this.changeHandler}
+                                name="status"
+                            >
+                                <MenuItem value="" name="status">
+                                    <em>None</em>
+                                </MenuItem>
+                                <MenuItem value={'Em Lançamento'}>Em Lançament</MenuItem>
+                                <MenuItem value={'Cancelado'}>Cancelado</MenuItem>
+                                <MenuItem value={'Concluído'} selected>Concluído</MenuItem>
+                            </Select>
 
                             <h3>Categorias</h3>
                             {categorias.map(value => (
@@ -191,7 +225,7 @@ export default class Incluir extends Component {
                                 variant="contained"
                                 type="submit"
                                 color="primary"
-                                onClick={() => this.addAnime(title, description, key)}
+                                onClick={() => this.addAnime(title, description, status, date)}
                             >Incluir anime</Button>
 
                         </div>
@@ -200,7 +234,7 @@ export default class Incluir extends Component {
                         </div>
                     </form>
                 </center>
-            </div>
+            </div >
 
         )
     }
