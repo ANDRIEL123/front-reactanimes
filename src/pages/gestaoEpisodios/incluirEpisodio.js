@@ -29,49 +29,53 @@ function IncluirEpisodio() {
 
     const addEpisodio = () => {
         //FAZ ISSO SE TIVER UM ARQUIVO SELECIONADO
-        if (selectedFile) {
-            const fd = new FormData();
-            fd.append("titleEpisodio", title);
-            fd.append("descriptionEpisodio", description);
-            fd.append("keyEpisodio", key);
-            fd.append("urlVideo", selectedFile, selectedFile.name);
-            fd.append("idanime", id_anime);
+        if (title !== '' && key !== '') {
+            if (selectedFile) {
+                const fd = new FormData();
+                fd.append("titleEpisodio", title);
+                fd.append("descriptionEpisodio", description);
+                fd.append("keyEpisodio", key);
+                fd.append("urlVideo", selectedFile, selectedFile.name);
+                fd.append("idanime", id_anime);
 
-            api.post(`/episodios`, fd)
-                .then(response => {
-                    console.log(response)
-                    let confirma = window.confirm('Episodio adicionado, deseja adicionar outro?')
-                    if (confirma) {
-                        gerirRotas(`/incluir-episodio/${id_anime}`)
-                    } else {
-                        navigate(`/gerir-episodios/${id_anime}`)
-                    }
+                api.post(`/episodios`, fd)
+                    .then(response => {
+                        console.log(response)
+                        let confirma = window.confirm('Episodio adicionado, deseja adicionar outro?')
+                        if (confirma) {
+                            gerirRotas(`/incluir-episodio/${id_anime}`)
+                        } else {
+                            navigate(`/gerir-episodios/${id_anime}`)
+                        }
+                    })
 
+                    .catch(error => {
+                        console.error(error)
+
+                    })
+            } else {
+                api.post('/episodios', {
+                    titleEpisodio: title,
+                    descriptionEpisodio: description,
+                    urlVideo: key,
+                    idanime: id_anime
                 })
+                    .then(function (response) {
+                        console.log(response);
+                        let confirma = window.confirm('Episodio adicionado, deseja adicionar outro?')
+                        if (confirma) {
+                            gerirRotas(`/incluir-episodio/${id_anime}`)
+                        } else {
+                            gerirRotas(`/gerir-episodios/${id_anime}`)
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
 
-                .catch(error => {
-                    console.error(error)
-
-                })
         } else {
-            api.post('/episodios', {
-                titleEpisodio: title,
-                descriptionEpisodio: description,
-                urlVideo: key,
-                idanime: id_anime
-            })
-                .then(function (response) {
-                    console.log(response);
-                    let confirma = window.confirm('Episodio adicionado, deseja adicionar outro?')
-                    if (confirma) {
-                        gerirRotas(`/incluir-episodio/${id_anime}`)
-                    } else {
-                        navigate(`/gerir-episodios/${id_anime}`)
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            alert('Informe ao menos o Título e a URL!')
         }
 
     }
@@ -101,7 +105,7 @@ function IncluirEpisodio() {
                     name="description"
                     value={description}
                     onChange={e => setDescription(e.target.value)}
-                    required />
+                />
                 <br></br><br></br>
                 <TextField
                     style={{ width: "80vmin" }}
@@ -131,6 +135,7 @@ function IncluirEpisodio() {
                     variant="contained"
                     className="btn-incluir"
                     color="primary"
+                    type="submit"
                     onClick={() => addEpisodio()}
                 >Incluir</Button>
 
