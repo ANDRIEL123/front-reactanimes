@@ -62,6 +62,7 @@ export default class Incluir extends Component {
 
 
             api.post("/animes", fd)
+
                 .then(response => {
                     console.log(response)
                     let confirma = window.confirm('Anime adicionado, deseja adicionar outro?')
@@ -72,10 +73,14 @@ export default class Incluir extends Component {
                         this.gerirRotas(`/dashboard`)
 
                     }
+                    this.setState({ selectedFile: null })
                 })
                 .catch(error => console.log('error', error));
         } else {
+            alert('Favor selecione a imagem do anime!')
+            /*
             api.post('/animes', {
+                imgAnime: null,
                 titleAnime: title,
                 descriptionAnime: description,
                 situacaoAnime: status,
@@ -84,7 +89,7 @@ export default class Incluir extends Component {
             })
                 .then(response => {
                     console.log(response);
-                    let confirma = window.confirm('Anime adicionado, deseja adicionar outro?')
+                    let confirma = window.confirm('Anime adicionado, porém sem imagem, deseja adicionar outro?')
                     if (confirma) {
                         this.gerirRotas(`/incluir-anime`)
                     } else {
@@ -94,6 +99,8 @@ export default class Incluir extends Component {
                 .catch(error => {
                     console.log(error);
                 });
+                */
+
         }
 
     }
@@ -125,7 +132,6 @@ export default class Incluir extends Component {
         this.setState({
             selectedFile: e.target.files[0]
         })
-        console.log(e.target.files[0])
     }
 
 
@@ -213,6 +219,7 @@ export default class Incluir extends Component {
                                     variant="contained"
                                     type="submit"
                                     color="primary"
+                                    required
                                 ><input
                                         type="file"
                                         onChange={this.fileSelectedHandler}
