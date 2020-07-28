@@ -192,7 +192,7 @@ export default class Incluir extends Component {
                                 <MenuItem value="" name="status">
                                     <em>None</em>
                                 </MenuItem>
-                                <MenuItem value={'Em Lançamento'}>Em Lançament</MenuItem>
+                                <MenuItem value={'Em Lançamento'}>Em Lançamento</MenuItem>
                                 <MenuItem value={'Cancelado'}>Cancelado</MenuItem>
                                 <MenuItem value={'Concluído'} selected>Concluído</MenuItem>
                             </Select>
