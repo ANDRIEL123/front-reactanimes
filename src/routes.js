@@ -16,9 +16,36 @@ import {
     Routes, Route
 } from 'react-router-dom'
 
-const autentificaRota = () => {
+const autentificaRota = (Componente) => {
     if (sessionStorage.getItem('user') && sessionStorage.getItem('password')) {
-        return < Menu />
+        if (Componente === 'Menu') {
+            return < Menu />
+        }
+        if (Componente === 'Inclusao') {
+            return < Inclusao />
+        }
+        if (Componente === 'GestaoEpisodios') {
+            return < GestaoEpisodios />
+        }
+        if (Componente === 'Update') {
+            return < Update />
+        }
+        if (Componente === 'IncluirEpisodio') {
+            return < IncluirEpisodio />
+        }
+        if (Componente === 'UpdateEpisodio') {
+            return < UpdateEpisodio />
+        }
+        if (Componente === 'GestaoCategorias') {
+            return < GestaoCategorias />
+        }
+        if (Componente === 'IncluirCategoria') {
+            return < IncluirCategoria />
+        }
+        if (Componente === 'UpdateCategoria') {
+            return < UpdateCategoria />
+        }
+
     } else {
         return < Autentifica />
     }
@@ -29,17 +56,15 @@ export default function mainRoutes() {
         <div>
             <Routes>
                 <Route path="/" element={< Login />} />
-                <Route path="/dashboard" element={autentificaRota()} />
-                <Route path="/incluir-anime" element={< Inclusao />} />
-                <Route path="/gerir-episodios/:id_anime" element={<GestaoEpisodios />} />
-                <Route path="/update-animes/:id_anime" element={<Update />} />
-                <Route path="/incluir-episodio/:id_anime" element={<IncluirEpisodio />} />
-                <Route path="/update-episodio/:id_episodio" element={<UpdateEpisodio />} />
-                <Route path="/gerir-categorias" element={<GestaoCategorias />} />
-                <Route path="/incluir-categoria" element={<IncluirCategoria />} />
-                <Route path="/update-categoria/:id_categoria" element={<UpdateCategoria />} />
-
-
+                <Route path="/dashboard" element={autentificaRota('Menu')} />
+                <Route path="/incluir-anime" element={autentificaRota('Inclusao')} />
+                <Route path="/gerir-episodios/:id_anime" element={autentificaRota('GestaoEpisodios')} />
+                <Route path="/update-animes/:id_anime" element={autentificaRota('Update')} />
+                <Route path="/incluir-episodio/:id_anime" element={autentificaRota('IncluirEpisodio')} />
+                <Route path="/update-episodio/:id_episodio" element={autentificaRota('UpdateEpisodio')} />
+                <Route path="/gerir-categorias" element={autentificaRota('GestaoCategorias')} />
+                <Route path="/incluir-categoria" element={autentificaRota('IncluirCategoria')} />
+                <Route path="/update-categoria/:id_categoria" element={autentificaRota('UpdateCategoria')} />
             </Routes>
         </div>
     )
