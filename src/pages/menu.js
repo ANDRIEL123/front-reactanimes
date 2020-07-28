@@ -31,16 +31,22 @@ export default class Menu extends Component {
         //FAÇO UMA REQUISIÇÃO PARA A ROTA /animes e passo o parametro Page
         //para informar ao back em que page está, no back ficaria:
         //req.query.page
-        const response = await api('/animes', {
+        const response = await api('/animes/pagination', {
             params: {
                 page: page
             }
         })
 
+        let numRegistros;
+
+        console.log(response.data)
+
         //Pego o objeto retornado do MYSQL informando o número de registros
         //Utilizando o SQL_CALC_FOUND_ROWS e após SELECT FOUND_ROWS() para descobrir
         //A quantidade de registros, avalie o back
-        let numRegistros = Object.values(response.data.numRegisters)
+        numRegistros = Object.values(response.data.numRegisters)
+
+
 
         //Se o numero de registros da tabela animes for maior que 10, então
         //A aplicação possuí mais de uma página, dessa forma divido por 10
